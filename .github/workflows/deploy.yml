@@ -58,14 +58,15 @@ jobs:  # 실행할 작업들 정의
       
       - name: Stop existing application  # 기존 애플리케이션 중지
         run: |
-          if sudo lsof -i :80; then  # 포트 80을 사용하는 프로세스가 있는지 확인
-            echo "Port 80 is in use. Stopping the process..."
-            sudo lsof -i :80 | awk 'NR!=1 {print $2}' | xargs sudo kill -9  # 프로세스 종료
+          if sudo lsof -i :8080; then  # 포트 80을 사용하는 프로세스가 있는지 확인
+            echo "Port 8080 is in use. Stopping the process..."
+            sudo lsof -i :8080 | awk 'NR!=1 {print $2}' | xargs sudo kill -9  # 프로세스 종료
           fi
       
       - name: Deploy application  # 애플리케이션 배포
         run: |
-          sudo nohup java -jar build/libs/blaybus-0.0.1-SNAPSHOT.jar &
+          cd ~
+          sudo nohup java -jar actions-runner/blaybus/blaybus-contest/blaybus-contest/build/libs/blaybus-0.0.1-SNAPSHOT.jar &
 
   dependency-submission:  # 의존성 제출 작업 정의
     runs-on: self-hosted   # self-hosted runner에서 실행
