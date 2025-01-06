@@ -35,12 +35,7 @@ jobs:  # 실행할 작업들 정의
         echo "${{ secrets.PROPERTIES_PROD }}" > ./src/main/resources/application-prod.yml  # 시크릿에서 application-prod.yml 가져와 파일 작성
       shell: bash
 
-    - name: Grant execute permission for gradlew  # Gradle Wrapper에 실행 권한 부여
-      run: chmod +x gradlew
 
-    - name: Build with Gradle  # Gradle을 사용하여 빌드 실행 (테스트 제외)
-      run: ./gradlew clean build -x test
-      shell: bash
 
   deploy:  # 배포 작업 정의
 
@@ -48,8 +43,12 @@ jobs:  # 실행할 작업들 정의
     steps:
       - uses: actions/checkout@v4  # 레포지토리 코드 체크아웃
 
-      - name: Grant execute permission for gradlew
+      - name: Grant execute permission for gradlew  # Gradle Wrapper에 실행 권한 부여
         run: chmod +x gradlew
+
+      - name: Build with Gradle  # Gradle을 사용하여 빌드 실행 (테스트 제외)
+        run: ./gradlew clean build -x test
+        shell: bash
 
       - name: Stop existing application  # 기존 애플리케이션 중지
         run: |
@@ -62,7 +61,9 @@ jobs:  # 실행할 작업들 정의
         run: ./gradlew bootJar
 
       - name: List build directory # jar 생성 확인
-        run: ls -l actions-runner/blaybus/blaybus-contest/blaybus-contest/build/libs/
+        run: |
+          ls -l
+          ls -l actions-runner/blaybus/blaybus-contest/blaybus-contest/build/libs/
 
       - name: Deploy application  # 애플리케이션 배포
         run: |
