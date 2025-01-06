@@ -1,4 +1,4 @@
-package contest.blaybus.config;
+package contest.blaybus.v1.config;
 
 
 import io.swagger.v3.oas.models.Components;
