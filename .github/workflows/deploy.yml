@@ -61,6 +61,9 @@ jobs:  # 실행할 작업들 정의
       - name: Build JAR   # JAR 파일 빌드
         run: ./gradlew bootJar
 
+      - name: List build directory # jar 생성 확인
+        run: ls -l actions-runner/blaybus/blaybus-contest/blaybus-contest/build/libs/
+
       - name: Deploy application  # 애플리케이션 배포
         run: |
           sudo nohup java -jar actions-runner/blaybus/blaybus-contest/blaybus-contest/build/libs/blaybus-0.0.1-SNAPSHOT.jar &
