@@ -2,6 +2,7 @@ package contest.blaybus.v1.presentation;
 
 import contest.blaybus.v1.application.PostService;
 import contest.blaybus.v1.common.ApiResponse;
+import contest.blaybus.v1.infrastructure.dto.PostListResponseDTO;
 import contest.blaybus.v1.infrastructure.dto.PostResponseDTO;
 import contest.blaybus.v1.presentation.dto.CreatePostRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,6 +34,15 @@ public class PostController {
             @PathVariable Long postId
     ) {
         return ApiResponse.success(postService.getPostById(postId));
+    }
+
+    @Operation(summary = "게시글 전체 목록 조회", description = "게시글 전체 목록을 최신순 또는 오래된 순으로 조회합니다.")
+    @GetMapping
+    public ApiResponse<PostListResponseDTO> getAllPosts(
+            @Parameter(description = "정렬 기준 LATEST, OLDEST 중 하나입니다. 기본값:LATEST(최신순)", example = "LATEST")
+            @RequestParam(required = false, defaultValue = "LATEST") String sort
+    ) {
+        return ApiResponse.success(postService.getAllPosts(sort));
     }
 
 }

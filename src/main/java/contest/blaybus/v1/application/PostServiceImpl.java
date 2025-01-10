@@ -2,13 +2,18 @@ package contest.blaybus.v1.application;
 
 import contest.blaybus.v1.domain.Admin;
 import contest.blaybus.v1.domain.Post;
+import contest.blaybus.v1.domain.SortOrder;
 import contest.blaybus.v1.domain.repository.AdminRepository;
 import contest.blaybus.v1.domain.repository.PostRepository;
+import contest.blaybus.v1.infrastructure.dto.PostListResponseDTO;
 import contest.blaybus.v1.infrastructure.dto.PostResponseDTO;
 import contest.blaybus.v1.presentation.dto.CreatePostRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,4 +53,31 @@ public class PostServiceImpl implements PostService {
         return PostResponseDTO.fromEntity(post);
     }
 
+    // 게시글 목록 조회
+    @Transactional(readOnly = true)
+    @Override
+    public PostListResponseDTO getAllPosts(String sort) {
+        SortOrder sortOrder;
+        try {
+            sortOrder = SortOrder.valueOf(sort.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid sort order. Use 'LATEST' or 'OLDEST'.");
+        }
+
+        List<Post> posts;
+        if (sortOrder == SortOrder.LATEST) {
+            posts = postRepository.findAllByOrderByCreatedAtDesc();
+        } else {
+            posts = postRepository.findAllByOrderByCreatedAtAsc();
+        }
+
+        List<PostResponseDTO> postResponseList = posts.stream()
+                .map(PostResponseDTO::fromEntity)
+                .collect(Collectors.toList());
+
+        return PostListResponseDTO.builder()
+                .count(postResponseList.size())
+                .posts(postResponseList)
+                .build();
+    }
 }
