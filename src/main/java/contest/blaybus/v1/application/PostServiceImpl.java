@@ -17,6 +17,8 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final AdminRepository adminRepository;
 
+
+    // 게시글 생성
     @Transactional
     @Override
     public PostResponseDTO createPost(CreatePostRequestDTO requestDTO, Long adminId) {
@@ -35,4 +37,15 @@ public class PostServiceImpl implements PostService {
 
         return PostResponseDTO.fromEntity(savedPost);
     }
+
+    // 게시글 단건 조회
+    @Transactional
+    @Override
+    public PostResponseDTO getPostById(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("post not found with ID: " + postId));
+
+        return PostResponseDTO.fromEntity(post);
+    }
+
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "게시글", description = "게시글 관련 API입니다.")
 @RestController
-@RequestMapping("/post")
+@RequestMapping("/posts")
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
@@ -26,4 +26,13 @@ public class PostController {
     ) {
         return ApiResponse.success(postService.createPost(requestDTO, adminId));
     }
+
+    @Operation(summary = "게시글 단건 조회", description = "게시글 ID를 받아 게시글을 조회합니다.")
+    @GetMapping("/{postId}")
+    public ApiResponse<PostResponseDTO> singlePost(
+            @PathVariable Long postId
+    ) {
+        return ApiResponse.success(postService.getPostById(postId));
+    }
+
 }

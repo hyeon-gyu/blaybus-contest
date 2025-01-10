@@ -6,4 +6,5 @@ import contest.blaybus.v1.presentation.dto.CreatePostRequestDTO;
 public interface PostService {
     PostResponseDTO createPost(CreatePostRequestDTO requestDTO, Long adminId);
 
+    PostResponseDTO getPostById(Long postId);
 }
