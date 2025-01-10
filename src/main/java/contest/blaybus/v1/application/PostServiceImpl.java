@@ -43,6 +43,17 @@ public class PostServiceImpl implements PostService {
         return PostResponseDTO.fromEntity(savedPost);
     }
 
+    // 게시글 삭제
+    @Transactional
+    @Override
+    public void deletePost(Long adminId, Long postId) {
+        if (!postRepository.existsById(postId)) {
+            throw new IllegalArgumentException("Post not found with ID: " + postId);
+        }
+
+        postRepository.deleteById(postId);
+    }
+
     // 게시글 단건 조회
     @Transactional
     @Override

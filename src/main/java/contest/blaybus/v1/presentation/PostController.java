@@ -28,6 +28,17 @@ public class PostController {
         return ApiResponse.success(postService.createPost(requestDTO, adminId));
     }
 
+    @Operation(summary = "게시글 삭제", description = "Admin ID를 쿼리 파라미터로 받아 게시글 ID를 통해 특정 게시글을 삭제합니다.(수정 예정)")
+    @DeleteMapping("/{postId}")
+    public ApiResponse<Void> deletePost(
+            @Parameter(description = "작성자(Admin)의 ID", required = true)
+            @RequestParam Long adminId,
+            @PathVariable Long postId
+    ) {
+        postService.deletePost(adminId, postId);
+        return ApiResponse.success(null);
+    }
+
     @Operation(summary = "게시글 단건 조회", description = "게시글 ID를 받아 게시글을 조회합니다.")
     @GetMapping("/{postId}")
     public ApiResponse<PostResponseDTO> singlePost(

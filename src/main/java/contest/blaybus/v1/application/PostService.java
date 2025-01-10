@@ -11,4 +11,5 @@ public interface PostService {
 
     PostListResponseDTO getAllPosts(String sort);
 
+    void deletePost(Long adminId, Long postId);
 }
