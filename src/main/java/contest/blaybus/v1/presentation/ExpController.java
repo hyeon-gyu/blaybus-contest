@@ -39,12 +39,12 @@ public class ExpController {
     }
 
     @Operation(summary = "획득 경험치 목록 조회", description = "획득 경험치 목록 조회")
-    @GetMapping("/recent")
-    public ApiResponse<Page<RecentExpInfoResponse>> getRecentExpInfoList(
+    @GetMapping("/list/{memberId}")
+    public ApiResponse<List<RecentExpInfoResponse>> getRecentExpInfoList(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size,
             @PathVariable(value = "memberId") Long memberId) {
-        return ApiResponse.success(expService.getRecentExpInfoList(page, size, memberId));
+        return ApiResponse.success(expService.getRecentExpInfoList(memberId));
     }
 
 
