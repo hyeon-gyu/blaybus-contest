@@ -8,10 +8,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -25,7 +28,8 @@ public class ExperiencePointHistory { // 최근 획득한 경험치 조회용 ( 
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private LocalDate date; // 경험치 획득 일자
+    @Temporal(TemporalType.DATE)
+    private Date date; // 경험치 획득 일자
     private String content; // 내용
     private long point; // 획득 경험치 수치
 

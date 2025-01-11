@@ -8,13 +8,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface ExpHistoryRepository extends JpaRepository<ExperiencePointHistory, Long> {
 
-    Optional<ExperiencePointHistory> findFirstByMemberByDateDesc(Member member);
+    Optional<ExperiencePointHistory> findFirstByMemberOrderByDateDesc(Member member);
 
-    Page<ExperiencePointHistory> findByMember(Member member, Pageable pageable);
+    Page<ExperiencePointHistory> findByMemberOrderByDateDesc(Member member, Pageable pageable);
 }

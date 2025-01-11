@@ -1,6 +1,5 @@
 package contest.blaybus.v1.application;
 
-import contest.blaybus.v1.domain.ExperiencePoint;
 import contest.blaybus.v1.domain.ExperiencePointHistory;
 import contest.blaybus.v1.domain.Member;
 import contest.blaybus.v1.domain.repository.ExpHistoryRepository;
@@ -19,7 +18,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import static contest.blaybus.v1.util.LevelCheckUtil.levelInfoMap;
@@ -64,7 +62,7 @@ public class ExpServiceImpl implements ExpService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("Member not found"));
 
-        ExperiencePointHistory expHistory = expHistoryRepository.findFirstByMemberByDateDesc(member)
+        ExperiencePointHistory expHistory = expHistoryRepository.findFirstByMemberOrderByDateDesc(member)
                 .orElseThrow(() -> new EmptyDataException("조회되는 값이 없습니다."));
 
         return RecentExpInfoResponse.fromEntity(expHistory);
@@ -75,7 +73,7 @@ public class ExpServiceImpl implements ExpService {
                 .orElseThrow(() -> new EntityNotFoundException("Member not found"));
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("date").descending());
-        Page<ExperiencePointHistory> expHistoryList = expHistoryRepository.findByMember(member, pageable);
+        Page<ExperiencePointHistory> expHistoryList = expHistoryRepository.findByMemberOrderByDateDesc(member, pageable);
         return expHistoryList.map(RecentExpInfoResponse::fromEntity);
     }
 

@@ -5,18 +5,18 @@ import contest.blaybus.v1.domain.ExperiencePointHistory;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RecentExpInfoResponse {
 
-    private LocalDate date;
+    private Date date;
     private String content;
     private long exp;
 
-    public RecentExpInfoResponse(LocalDate date, String content, int exp) {
+    public RecentExpInfoResponse(Date date, String content, long exp) {
         this.date = date;
         this.content = content;
         this.exp = exp;
