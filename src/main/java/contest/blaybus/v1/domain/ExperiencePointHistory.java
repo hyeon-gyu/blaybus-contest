@@ -11,6 +11,8 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -23,7 +25,7 @@ public class ExperiencePointHistory { // 최근 획득한 경험치 조회용 ( 
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private String date; // 경험치 획득 일자
+    private LocalDate date; // 경험치 획득 일자
     private String content; // 내용
     private long point; // 획득 경험치 수치
 

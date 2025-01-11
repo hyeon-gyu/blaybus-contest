@@ -1,13 +1,21 @@
 package contest.blaybus.v1.application;
 
 import contest.blaybus.v1.domain.ExperiencePoint;
+import contest.blaybus.v1.domain.ExperiencePointHistory;
 import contest.blaybus.v1.domain.Member;
+import contest.blaybus.v1.domain.repository.ExpHistoryRepository;
 import contest.blaybus.v1.domain.repository.ExpRepository;
 import contest.blaybus.v1.domain.repository.MemberRepository;
 import contest.blaybus.v1.infrastructure.dto.ExpStatusResponse;
+import contest.blaybus.v1.infrastructure.dto.RecentExpInfoResponse;
+import contest.blaybus.v1.presentation.exception.EmptyDataException;
 import contest.blaybus.v1.util.LevelCheckUtil;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,6 +29,7 @@ import static contest.blaybus.v1.util.LevelCheckUtil.levelInfoMap;
 @RequiredArgsConstructor
 public class ExpServiceImpl implements ExpService {
 
+    private final ExpHistoryRepository expHistoryRepository;
     private final MemberRepository memberRepository;
     private final ExpRepository expRepository;
 
@@ -49,6 +58,25 @@ public class ExpServiceImpl implements ExpService {
                 .expForLevelup(requiredTotalExpForLevelUp)
                 .remainingExp(remainingExp)
                 .build();
+    }
+
+    public RecentExpInfoResponse getRecentExpInfo(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+
+        ExperiencePointHistory expHistory = expHistoryRepository.findFirstByMemberByDateDesc(member)
+                .orElseThrow(() -> new EmptyDataException("조회되는 값이 없습니다."));
+
+        return RecentExpInfoResponse.fromEntity(expHistory);
+    }
+
+    public Page<RecentExpInfoResponse> getRecentExpInfoList(int page, int size, Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("date").descending());
+        Page<ExperiencePointHistory> expHistoryList = expHistoryRepository.findByMember(member, pageable);
+        return expHistoryList.map(RecentExpInfoResponse::fromEntity);
     }
 
     private List<Long> getRequiredExpInfoForLevelUp(Member member) {
