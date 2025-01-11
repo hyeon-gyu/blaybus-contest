@@ -4,13 +4,19 @@ package contest.blaybus.v1.presentation;
 import contest.blaybus.v1.application.ExpService;
 import contest.blaybus.v1.common.ApiResponse;
 import contest.blaybus.v1.infrastructure.dto.ExpStatusResponse;
+import contest.blaybus.v1.infrastructure.dto.RecentExpInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Tag(name = "경험치", description = "경험치 조회 관련 API 입니다.")
 @RestController
@@ -25,5 +31,21 @@ public class ExpController {
     public ApiResponse<ExpStatusResponse> getExp(@PathVariable(value = "memberId") Long memberId) {
         return ApiResponse.success(expService.getExpStatus(memberId));
     }
+
+    @Operation(summary = "최근 획득한 경험치 조회", description = "최근 수령한 경험치 날짜, 내용, 숫자 표시")
+    @GetMapping("/recent/{memberId}")
+    public ApiResponse<RecentExpInfoResponse> getRecentExpInfo(@PathVariable(value = "memberId") Long memberId) {
+        return ApiResponse.success(expService.getRecentExpInfo(memberId));
+    }
+
+    @Operation(summary = "획득 경험치 목록 조회", description = "획득 경험치 목록 조회")
+    @GetMapping("/recent")
+    public ApiResponse<Page<RecentExpInfoResponse>> getRecentExpInfoList(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @PathVariable(value = "memberId") Long memberId) {
+        return ApiResponse.success(expService.getRecentExpInfoList(page, size, memberId));
+    }
+
 
 }

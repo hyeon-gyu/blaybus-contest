@@ -11,12 +11,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -44,7 +47,10 @@ public class Member {
     private String profileImg; // 캐릭터 url
 
     private String level; // 레벨
-    private LocalDate effectiveDate; // 근무시작일
+
+    @Temporal(TemporalType.DATE)
+    private Date effectiveDate; // 근무시작일
+
 
     private long totalExp; // 총 누적 경험치
 
@@ -59,7 +65,7 @@ public class Member {
         this.identificationNumber = identificationNumber;
         this.password = password;
         this.name = name;
-        this.effectiveDate = LocalDate.now();
+        this.effectiveDate = new Date();
         this.jobType = jobType;
         this.level = jobType.getStartLevel(); // 직군에 따른 시작 레벨 선정
         this.totalExp = jobType.getStartExp();
