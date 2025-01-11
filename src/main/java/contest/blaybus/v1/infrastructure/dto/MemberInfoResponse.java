@@ -5,6 +5,8 @@ import contest.blaybus.v1.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDate;
+
 @Getter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -14,8 +16,8 @@ public class MemberInfoResponse {
     private String team; // 소속
     private String name; // 성함
     private String character; // 캐릭터 URL
-    private String effectiveDate; // 근무시작일
-    private int level; // 레벨
+    private LocalDate effectiveDate; // 근무시작일
+    private String level; // 레벨
 
     public static MemberInfoResponse fromEntity(Member member) {
         return MemberInfoResponse.builder()
