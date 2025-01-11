@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static contest.blaybus.v1.util.LevelCheckUtil.levelInfoMap;
 
@@ -68,13 +69,14 @@ public class ExpServiceImpl implements ExpService {
         return RecentExpInfoResponse.fromEntity(expHistory);
     }
 
-    public Page<RecentExpInfoResponse> getRecentExpInfoList(int page, int size, Long memberId) {
+    public List<RecentExpInfoResponse> getRecentExpInfoList(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("Member not found"));
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by("date").descending());
-        Page<ExperiencePointHistory> expHistoryList = expHistoryRepository.findByMemberOrderByDateDesc(member, pageable);
-        return expHistoryList.map(RecentExpInfoResponse::fromEntity);
+        List<ExperiencePointHistory> expHistoryList = expHistoryRepository.findByMemberOrderByDateDesc(member);
+        return expHistoryList.stream()
+                        .map(RecentExpInfoResponse::fromEntity)
+                        .collect(Collectors.toList());
     }
 
     private List<Long> getRequiredExpInfoForLevelUp(Member member) {
