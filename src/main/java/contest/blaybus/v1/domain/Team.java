@@ -1,7 +1,12 @@
 package contest.blaybus.v1.domain;
 
+
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 
+import java.util.stream.Stream;
+
+@Getter
 public enum Team {
     EUMSEONG1("음성 1센터"),
     EUMSEONG2("음성 2센터"),
@@ -18,8 +23,13 @@ public enum Team {
         this.displayName = displayName;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    @JsonCreator
+    public static Team parsing(String inputValue) {
+        return Stream.of(Team.values())
+                .filter(team -> team.toString().equals(inputValue))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("올바른 팀명을 입력하세요"));
     }
+
 }
 

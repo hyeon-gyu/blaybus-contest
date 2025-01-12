@@ -1,7 +1,6 @@
 package contest.blaybus.v1.application;
 
 import contest.blaybus.v1.domain.Member;
-import contest.blaybus.v1.domain.repository.AdminRepository;
 import contest.blaybus.v1.domain.repository.MemberRepository;
 import contest.blaybus.v1.presentation.dto.NewMemberDTO;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,12 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public String addMember(NewMemberDTO dto) {
-        memberRepository.save(new Member(dto.number(), dto.pwd()));
+        final Member newMember = Member.builder()
+                .identificationNumber(dto.number())
+                .password(dto.pwd())
+                .jobType(dto.jobType()).build();
+
+        memberRepository.save(newMember);
         return "성공";
     }
 }

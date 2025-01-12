@@ -16,4 +16,14 @@ public class ExceptionControllerAdvice {
     public ResponseEntity<ApiResponse<?>> handleNotFoundException(EntityNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.fail(e.getMessage()));
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ApiResponse<?>> handleRuntimeException(RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.fail(e.getMessage()));
+    }
+
+    @ExceptionHandler(EmptyDataException.class)
+    public ResponseEntity<ApiResponse<?>> handleEmptyDataException(EmptyDataException e) {
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(e.getMessage()));
+    }
 }
