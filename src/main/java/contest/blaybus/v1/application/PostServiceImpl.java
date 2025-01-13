@@ -8,6 +8,7 @@ import contest.blaybus.v1.domain.repository.PostRepository;
 import contest.blaybus.v1.infrastructure.dto.PostListResponseDTO;
 import contest.blaybus.v1.infrastructure.dto.PostResponseDTO;
 import contest.blaybus.v1.presentation.dto.CreatePostRequestDTO;
+import contest.blaybus.v1.presentation.dto.UpdatePostRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,5 +91,22 @@ public class PostServiceImpl implements PostService {
                 .count(postResponseList.size())
                 .posts(postResponseList)
                 .build();
+    }
+
+    // 게시글 수정
+    @Transactional
+    @Override
+    public PostResponseDTO updatePost(Long adminId, Long postId, UpdatePostRequestDTO requestDTO) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Post not found with ID: " + postId));
+
+        if (!post.getAdmin().getId().equals(adminId)) {
+            throw new IllegalArgumentException("You do not have permission to update this post.");
+        }
+
+        post.edit(requestDTO);
+
+        Post updatedPost = postRepository.save(post);
+        return PostResponseDTO.fromEntity(updatedPost);
     }
 }
