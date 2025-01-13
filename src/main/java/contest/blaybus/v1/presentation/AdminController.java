@@ -39,7 +39,7 @@ public class AdminController {
     }
 
     @GetMapping("/jobtype")
-    @Operation(summary = "직군 목록 조회", description = "어드민 신규사원 생성시 직군 목록 조회 API 입니다")
+    @Operation(summary = "직군 목록 조회", description = "어드민 신규사원 생성시 직군 목록 조회 API 입니다, 입사일은 2024-01-01 형식으로 보내야합니다.")
     public ApiResponse<List<String>> getJobTypeList() {
         return ApiResponse.success(adminService.getJobTypeList());
     }
