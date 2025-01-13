@@ -2,7 +2,6 @@ package contest.blaybus.v1.domain;
 
 
 import jakarta.annotation.Nullable;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -17,7 +16,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -61,11 +59,12 @@ public class Member {
     private List<ExperiencePointHistory> experiencePointHistories = new ArrayList<>();
 
     @Builder
-    public Member(String identificationNumber, String password, String name, JobType jobType) { // 신규 사원 등록
-        this.identificationNumber = identificationNumber;
-        this.password = password;
+    public Member(String name, Team team, String identificationNumber, String pwd, JobType jobType, Date date) { // 신규 사원 등록
         this.name = name;
-        this.effectiveDate = new Date();
+        this.team = team;
+        this.identificationNumber = identificationNumber;
+        this.password = pwd;
+        this.effectiveDate = date;
         this.jobType = jobType;
         this.level = jobType.getStartLevel(); // 직군에 따른 시작 레벨 선정
         this.totalExp = jobType.getStartExp();

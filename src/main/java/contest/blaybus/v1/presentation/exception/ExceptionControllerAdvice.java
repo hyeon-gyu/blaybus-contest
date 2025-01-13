@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.text.ParseException;
+
 @RestControllerAdvice
 @Slf4j
 public class ExceptionControllerAdvice {
@@ -25,5 +27,10 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(EmptyDataException.class)
     public ResponseEntity<ApiResponse<?>> handleEmptyDataException(EmptyDataException e) {
         return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(e.getMessage()));
+    }
+
+    @ExceptionHandler(ParseException.class)
+    public ResponseEntity<ApiResponse<?>> handleParseException(ParseException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.fail("날짜 형식이 올바르지 않습니다. 'YYYY-MM-DD' 형식으로 입력해주세요."));
     }
 }

@@ -26,7 +26,7 @@ public enum Team {
     @JsonCreator
     public static Team parsing(String inputValue) {
         return Stream.of(Team.values())
-                .filter(team -> team.toString().equals(inputValue))
+                .filter(team -> team.getDisplayName().equals(inputValue))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("올바른 팀명을 입력하세요"));
     }
