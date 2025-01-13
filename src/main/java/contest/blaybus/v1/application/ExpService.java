@@ -13,4 +13,8 @@ public interface ExpService {
     RecentExpInfoResponse getRecentExpInfo(Long memberId);
 
     List<RecentExpInfoResponse> getRecentExpInfoList(Long memberId);
+
+    Long getExpBar(Long memberId);
+
+    Long getExpBarThisYear(Long memberId);
 }

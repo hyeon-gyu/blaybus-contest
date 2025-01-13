@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,6 +32,19 @@ public class ExperiencePoint {
     private long jobQuestEval; // 직무 퀘스트 점수
     private long leaderQuestEval; // 리더 퀘스트 점수
     private long companyProjectScore; // 전사 프로젝트 점수
+
+    @Builder
+    public ExperiencePoint(Member member) {
+        this.year = 0;
+        this.totalExp = 0;
+        this.half1Eval = 0;
+        this.half2Eval = 0;
+        this.jobQuestEval = 0;
+        this.leaderQuestEval = 0;
+        this.companyProjectScore = 0;
+        this.assignMember(member);
+    }
+
 
     // 연관관계 편의 메소드
     public void assignMember(Member member) {
