@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,6 +33,14 @@ public class ExperiencePointHistory { // 최근 획득한 경험치 조회용 ( 
     private Date date; // 경험치 획득 일자
     private String content; // 내용
     private long point; // 획득 경험치 수치
+
+    @Builder
+    public ExperiencePointHistory(Member member, String content, long point) {
+        this.date = new Date();
+        this.content = content;
+        this.point = point;
+        this.assignMember(member);
+    }
 
     public void assignMember(Member member) { // 연관관계 주인쪽에서 추가해주기
         if(this.member != null) {

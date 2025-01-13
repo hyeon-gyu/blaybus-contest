@@ -8,6 +8,7 @@ import contest.blaybus.v1.infrastructure.dto.RecentExpInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,11 +42,24 @@ public class ExpController {
     @Operation(summary = "획득 경험치 목록 조회", description = "획득 경험치 목록 조회")
     @GetMapping("/list/{memberId}")
     public ApiResponse<List<RecentExpInfoResponse>> getRecentExpInfoList(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
             @PathVariable(value = "memberId") Long memberId) {
         return ApiResponse.success(expService.getRecentExpInfoList(memberId));
     }
+
+    @Operation(summary = "경험치 Bar (작년까지 누적)", description = "작년까지 누적된 경험치 / 해당 레벨의 총 필요 경험치")
+    @GetMapping("/bar/{memberId}")
+    public ApiResponse<Long> getExpBar(
+            @PathVariable(value = "memberId") Long memberId) {
+        return ApiResponse.success(expService.getExpBar(memberId));
+    }
+
+    @Operation(summary = "경험치 Bar (올해 누적)", description = "올해 내에 누적된 경험치 / 1년에 개인이 받을 수 있는 중위평균 경험치")
+    @GetMapping("/bar/today/{memberId}")
+    public ApiResponse<Long> getExpBarThisYear(
+            @PathVariable(value = "memberId") Long memberId) {
+        return ApiResponse.success(expService.getExpBarThisYear(memberId));
+    }
+
 
 
 }

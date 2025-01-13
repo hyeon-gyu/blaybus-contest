@@ -59,6 +59,18 @@ public class LevelCheckUtil {
 
     }
 
+    @Getter
+    public static class LevelInfo {
+        private final String level;
+        private final long requiredExp;
+
+        LevelInfo(String level, long requiredExp) {
+            this.level = level;
+            this.requiredExp = requiredExp;
+        }
+
+    }
+
     public static void checkAndLevelUp(Member member) {
         List<LevelInfo> levels = levelInfoMap.get(member.getJobType());
         for (LevelInfo levelInfo : levels) {
@@ -70,15 +82,18 @@ public class LevelCheckUtil {
         }
     }
 
-    @Getter
-    public static class LevelInfo {
-        private final String level;
-        private final long requiredExp;
+    public static long getExpRequiredForNextLevel(Member member) {
+        JobType jobType = member.getJobType();
+        long currentTotalExp = member.getTotalExp();
+        List<LevelInfo> levels = levelInfoMap.get(jobType);
 
-        LevelInfo(String level, long requiredExp) {
-            this.level = level;
-            this.requiredExp = requiredExp;
+        for (LevelInfo levelInfo : levels) {
+            if (levelInfo.getRequiredExp() > currentTotalExp) {
+                return levelInfo.getRequiredExp();
+            }
         }
 
+        // 만약 최고 레벨이라면 현재 경험치를 반환
+        return currentTotalExp;
     }
 }
