@@ -49,6 +49,8 @@ public class Member {
     @Temporal(TemporalType.DATE)
     private Date effectiveDate; // 근무시작일
 
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.TYPE_USER;
 
     private long totalExp; // 총 누적 경험치
 
