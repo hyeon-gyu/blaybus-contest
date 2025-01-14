@@ -74,4 +74,5 @@ public class Member {
         this.level = level;
     }
     public void updatePwd(String pwd) {this.password = pwd; }
+    public void updateProfileImg(String url) {this.profileImg = url; }
 }

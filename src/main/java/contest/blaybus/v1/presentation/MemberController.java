@@ -4,6 +4,7 @@ import contest.blaybus.v1.application.ImageService;
 import contest.blaybus.v1.application.MemberService;
 import contest.blaybus.v1.infrastructure.dto.MemberInfoResponse;
 import contest.blaybus.v1.common.ApiResponse;
+import contest.blaybus.v1.presentation.dto.NewProfileImageDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -53,5 +54,12 @@ public class MemberController {
     @GetMapping("/profile")
     public ApiResponse<List<String>> getProfileImgList(){
         return ApiResponse.success(imageService.getProfileImageUrls());
+    }
+
+    @Operation(summary = "프로필 이미지 적용 API", description = "구성원 정보 설정 - 프로필 이미지 선택 API입니다.")
+    @PostMapping("/profile")
+    public ApiResponse<String> updateProfileImg(
+            @RequestBody NewProfileImageDTO dto) {
+        return ApiResponse.success(memberService.updateProfileImg(dto));
     }
 }
