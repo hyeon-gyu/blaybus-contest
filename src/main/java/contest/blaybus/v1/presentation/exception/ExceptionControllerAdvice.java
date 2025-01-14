@@ -33,4 +33,9 @@ public class ExceptionControllerAdvice {
     public ResponseEntity<ApiResponse<?>> handleParseException(ParseException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.fail("날짜 형식이 올바르지 않습니다. 'YYYY-MM-DD' 형식으로 입력해주세요."));
     }
+
+    @ExceptionHandler(LoginFailException.class)
+    public ResponseEntity<ApiResponse<?>> handleLoginException(LoginFailException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.fail("로그인에 실패했습니다."));
+    }
 }
