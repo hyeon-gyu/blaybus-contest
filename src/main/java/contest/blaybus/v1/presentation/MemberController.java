@@ -1,5 +1,6 @@
 package contest.blaybus.v1.presentation;
 
+import contest.blaybus.v1.application.ImageService;
 import contest.blaybus.v1.application.MemberService;
 import contest.blaybus.v1.infrastructure.dto.MemberInfoResponse;
 import contest.blaybus.v1.common.ApiResponse;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Tag(name = "멤버 정보", description = "멤버 정보 관련 API입니다.")
 @RestController
 @RequestMapping("/member")
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final MemberService memberService;
+    private final ImageService imageService;
 
     @Operation(summary = "사용자 정보 조회", description = "사용자 정보 조회 API입니다")
     @GetMapping("/{memberId}")
@@ -43,5 +47,11 @@ public class MemberController {
     public ApiResponse<Boolean> checkDupPwd(
             @RequestBody NewPwdDTO dto) {
         return ApiResponse.success(memberService.checkDupPwd(dto));
+    }
+
+    @Operation(summary = "프로필 이미지 목록 조회 API", description = "구성원 정보 설정 - 프로필 이미지 목록 조회 API입니다.")
+    @GetMapping("/profile")
+    public ApiResponse<List<String>> getProfileImgList(){
+        return ApiResponse.success(imageService.getProfileImageUrls());
     }
 }
