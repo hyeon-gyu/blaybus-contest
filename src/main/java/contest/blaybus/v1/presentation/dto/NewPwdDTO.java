@@ -1,4 +1,4 @@
-package contest.blaybus.v1.presentation;
+package contest.blaybus.v1.presentation.dto;
 
 public record NewPwdDTO(Long memberId, String pwd) {
 }
