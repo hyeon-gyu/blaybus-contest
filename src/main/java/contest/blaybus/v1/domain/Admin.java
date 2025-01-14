@@ -25,4 +25,6 @@ public class Admin {
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
     private List<Post> postList = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.TYPE_ADMIN;
 }
