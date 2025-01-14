@@ -73,5 +73,5 @@ public class Member {
     public void updateLevel(String level) {
         this.level = level;
     }
-
+    public void updatePwd(String pwd) {this.password = pwd; }
 }
