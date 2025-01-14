@@ -5,9 +5,13 @@ import contest.blaybus.v1.infrastructure.dto.MemberInfoResponse;
 import contest.blaybus.v1.domain.Member;
 import contest.blaybus.v1.domain.repository.MemberRepository;
 import contest.blaybus.v1.presentation.NewPwdDTO;
+import contest.blaybus.v1.presentation.dto.NewProfileImageDTO;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -20,15 +24,25 @@ public class MemberServiceImpl implements MemberService{
         return MemberInfoResponse.fromEntity(member);
     }
 
+    @Transactional
     public String changePwd(NewPwdDTO dto) {
         Member member = memberRepository.findById(dto.memberId()).orElseThrow(EntityNotFoundException::new);
         member.updatePwd(dto.pwd());
-        memberRepository.save(member);
         return "성공";
     }
 
     public Boolean checkDupPwd(NewPwdDTO dto) {
         Member member = memberRepository.findById(dto.memberId()).orElseThrow(EntityNotFoundException::new);
         return member.getPassword().equals(dto.pwd());
+    }
+
+    @Transactional
+    public String updateProfileImg(NewProfileImageDTO dto) {
+        Member member = memberRepository.findById(dto.memberId()).orElseThrow(EntityNotFoundException::new);
+        if(Objects.equals(member.getProfileImg(), dto.url())) {
+            return "동일한 주소입니다.";
+        }
+        member.updateProfileImg(dto.url());
+        return "성공";
     }
 }
