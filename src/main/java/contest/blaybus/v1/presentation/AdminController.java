@@ -7,6 +7,7 @@ import contest.blaybus.v1.domain.JobType;
 import contest.blaybus.v1.domain.Team;
 import contest.blaybus.v1.presentation.dto.NewMemberDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EnumType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
+@Tag(name = "어드민(관리자) ", description = "어드민 제어 관련 API입니다.")
 public class AdminController {
 
     private final AdminService adminService;
