@@ -5,6 +5,8 @@ import contest.blaybus.v1.application.MemberService;
 import contest.blaybus.v1.infrastructure.dto.MemberInfoResponse;
 import contest.blaybus.v1.common.ApiResponse;
 import contest.blaybus.v1.presentation.dto.NewProfileImageDTO;
+import contest.blaybus.v1.presentation.dto.NewPwdDTO;
+import contest.blaybus.v1.presentation.dto.NewUuidDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -61,5 +63,12 @@ public class MemberController {
     public ApiResponse<String> updateProfileImg(
             @RequestBody NewProfileImageDTO dto) {
         return ApiResponse.success(memberService.updateProfileImg(dto));
+    }
+
+    @Operation(summary = "멤버별 UUID 업데이트", description = "FCM 푸시 알림을 위해서 앱 이용자의 기기 고유값을 저장하고 있어야합니다.")
+    @PostMapping("/uuid")
+    public ApiResponse<String> updateUuid(
+            @RequestBody NewUuidDTO dto) {
+        return ApiResponse.success(memberService.updateUuid(dto));
     }
 }

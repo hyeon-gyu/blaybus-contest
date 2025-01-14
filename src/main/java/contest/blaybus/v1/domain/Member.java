@@ -52,6 +52,8 @@ public class Member {
 
     private long totalExp; // 총 누적 경험치
 
+    private String fcmToken; // 개인 기기 고유값
+
     @OneToMany(mappedBy = "member") // cascade 제거 : 멤버가 삭제되어도 기록은 유지
     private List<ExperiencePoint> experiencePoints = new ArrayList<>();
 
@@ -75,4 +77,5 @@ public class Member {
     }
     public void updatePwd(String pwd) {this.password = pwd; }
     public void updateProfileImg(String url) {this.profileImg = url; }
+    public void updateFcmToken(String uuid) {this.fcmToken = uuid; }
 }

@@ -39,7 +39,10 @@ dependencies {
 	implementation 'com.mysql:mysql-connector-j:8.2.0'
 	// s3
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-
+	// firebase
+	implementation 'com.google.firebase:firebase-admin:9.1.1'
+	// http 전송
+	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.2.2'
 
 	tasks.named('test') {
 		useJUnitPlatform()

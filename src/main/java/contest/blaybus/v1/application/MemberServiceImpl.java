@@ -4,8 +4,9 @@ package contest.blaybus.v1.application;
 import contest.blaybus.v1.infrastructure.dto.MemberInfoResponse;
 import contest.blaybus.v1.domain.Member;
 import contest.blaybus.v1.domain.repository.MemberRepository;
-import contest.blaybus.v1.presentation.NewPwdDTO;
+import contest.blaybus.v1.presentation.dto.NewPwdDTO;
 import contest.blaybus.v1.presentation.dto.NewProfileImageDTO;
+import contest.blaybus.v1.presentation.dto.NewUuidDTO;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,16 @@ public class MemberServiceImpl implements MemberService{
             return "동일한 주소입니다.";
         }
         member.updateProfileImg(dto.url());
+        return "성공";
+    }
+
+    @Transactional
+    public String updateUuid(NewUuidDTO dto) {
+        Member member = memberRepository.findById(dto.memberId()).orElseThrow(EntityNotFoundException::new);
+        if(Objects.equals(member.getFcmToken(), dto.uuid())) {
+            return "동일한 UUID입니다.";
+        }
+        member.updateFcmToken(dto.uuid());
         return "성공";
     }
 }
