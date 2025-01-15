@@ -25,10 +25,10 @@ public class JwtAuthenticationService {
 
     public void authenticate(final String jwtToken) {
         if (tokenProviderService.validate(jwtToken)) {
-            // JWT 토큰으로 사원번호 추출
-            String identificationNumber = tokenProviderService.extract(jwtToken);
 
-            Optional<Member> memberOptional = memberRepository.findByIdentificationNumber(identificationNumber);
+            // JWT 토큰으로 Key 추출
+            String uniqueKey = tokenProviderService.extract(jwtToken);
+            Optional<Member> memberOptional = memberRepository.findByPersonalId(uniqueKey);
 
             if (memberOptional.isPresent()) {
                 Member member = memberOptional.get();
@@ -38,7 +38,7 @@ public class JwtAuthenticationService {
                 return;
             }
 
-            Optional<Admin> adminOptional = adminRepository.findByIdentificationNumber(identificationNumber);
+            Optional<Admin> adminOptional = adminRepository.findByIdentificationNumber(uniqueKey);
             if (adminOptional.isPresent()) {
                 Admin admin = adminOptional.get();
                 List<GrantedAuthority> authorities = createRole(admin.getRole());
@@ -51,7 +51,7 @@ public class JwtAuthenticationService {
     // 우리의 Role을 Spring에 맞게 변환
     private List<GrantedAuthority> createRole(Role role) {
         // [USER_TYPE]
-        return Collections.singletonList(new SimpleGrantedAuthority(role.name()));
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
     private UsernamePasswordAuthenticationToken createSpringToken(Object principal, String jwtToken, List<GrantedAuthority> authorities) {

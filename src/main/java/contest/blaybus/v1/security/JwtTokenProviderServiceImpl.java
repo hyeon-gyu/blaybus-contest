@@ -30,8 +30,8 @@ public class JwtTokenProviderServiceImpl implements TokenProviderService {
     }
 
     @Override
-    public String create(String identificationNumber) {
-        Claims claims = createClaims(identificationNumber);
+    public String create(String personalId) {
+        Claims claims = createClaims(personalId);
         Date now = issuedAt();
         Date expirationDate = expiredAt(now);
 
@@ -63,8 +63,8 @@ public class JwtTokenProviderServiceImpl implements TokenProviderService {
         }
     }
 
-    private Claims createClaims(String email) {
-        return Jwts.claims().setSubject(email);
+    private Claims createClaims(String personalId) {
+        return Jwts.claims().setSubject(personalId);
     }
 
     private Date issuedAt() {
