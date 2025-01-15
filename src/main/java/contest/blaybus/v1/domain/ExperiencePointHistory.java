@@ -14,7 +14,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -24,6 +23,8 @@ public class ExperiencePointHistory { // 최근 획득한 경험치 조회용 ( 
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    private ExpType expType; // 경험치 카테고리
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -35,10 +36,11 @@ public class ExperiencePointHistory { // 최근 획득한 경험치 조회용 ( 
     private long point; // 획득 경험치 수치
 
     @Builder
-    public ExperiencePointHistory(Member member, String content, long point) {
+    public ExperiencePointHistory(Member member, String content, long point, ExpType expType) {
         this.date = new Date();
         this.content = content;
         this.point = point;
+        this.expType = expType;
         this.assignMember(member);
     }
 

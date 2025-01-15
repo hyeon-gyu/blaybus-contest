@@ -1,19 +1,18 @@
 package contest.blaybus.v1.application;
 
+import contest.blaybus.v1.domain.ExpType;
 import contest.blaybus.v1.domain.ExperiencePointHistory;
 import contest.blaybus.v1.domain.Member;
 import contest.blaybus.v1.domain.repository.ExpHistoryRepository;
 import contest.blaybus.v1.domain.repository.ExpRepository;
 import contest.blaybus.v1.domain.repository.MemberRepository;
+import contest.blaybus.v1.infrastructure.dto.ExpHistoryResponse;
 import contest.blaybus.v1.infrastructure.dto.ExpStatusResponse;
 import contest.blaybus.v1.infrastructure.dto.RecentExpInfoResponse;
 import contest.blaybus.v1.presentation.exception.EmptyDataException;
 import contest.blaybus.v1.util.LevelCheckUtil;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -71,15 +70,6 @@ public class ExpServiceImpl implements ExpService {
         return RecentExpInfoResponse.fromEntity(expHistory);
     }
 
-    public List<RecentExpInfoResponse> getRecentExpInfoList(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
-
-        List<ExperiencePointHistory> expHistoryList = expHistoryRepository.findByMemberOrderByDateDesc(member);
-        return expHistoryList.stream()
-                        .map(RecentExpInfoResponse::fromEntity)
-                        .collect(Collectors.toList());
-    }
 
     public Long getExpBar(Long memberId) {
         Member member = memberRepository.findById(memberId)
@@ -100,6 +90,23 @@ public class ExpServiceImpl implements ExpService {
                 .orElseThrow(() -> new EmptyDataException("조회되는 값이 없습니다."));
         double percentage = (totalExpThisYear.doubleValue() / medianAverageExp) * 100;
         return Math.round(percentage);
+    }
+
+    public List<ExpHistoryResponse> getExpHistoryPerCategory(Long memberId, String category, String order) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+        Sort sort = "desc".equalsIgnoreCase(order) ? Sort.by("date").descending() : Sort.by("date").ascending();
+        List<ExperiencePointHistory> histories;
+        if (category.equals("all")) {
+            histories = expHistoryRepository.findByMemberOrderByDateDesc(member, sort);
+        } else {
+            ExpType expType = ExpType.valueOf(category.toUpperCase());
+            histories = expHistoryRepository.findByMemberAndExpTypeOrderByDateDesc(member, expType, sort);
+        }
+
+        return histories.stream()
+                .map(ExpHistoryResponse::fromEntity)
+                .collect(Collectors.toList());
     }
 
     private List<Long> getRequiredExpInfoForLevelUp(Member member) {
