@@ -25,22 +25,22 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public LoginResponseDTO adminLogin(LoginRequestDTO request) {
-        Admin admin = adminRepository.findByIdentificationNumber(request.getIdentificationNumber())
+        Admin admin = adminRepository.findByIdentificationNumber(request.getLoginRequestId())
                 .orElseThrow(EntityNotFoundException::new);
 
         checkPassword(request.getPassword(), admin.getPassword());
-        String jwtToken = tokenProviderService.create(request.getIdentificationNumber());
+        String jwtToken = tokenProviderService.create(request.getLoginRequestId());
 
         return new LoginResponseDTO("Admin logged in successfully", admin.getRole(), jwtToken);
     }
 
     @Override
     public LoginResponseDTO memberLogin(LoginRequestDTO request) {
-        Member member = memberRepository.findByIdentificationNumber(request.getIdentificationNumber())
+        Member member = memberRepository.findByIdentificationNumber(request.getLoginRequestId())
                 .orElseThrow(EntityNotFoundException::new);
 
         checkPassword(request.getPassword(), member.getPassword());
-        String jwtToken = tokenProviderService.create(request.getIdentificationNumber());
+        String jwtToken = tokenProviderService.create(request.getLoginRequestId());
 
         return new LoginResponseDTO("Admin logged in successfully", member.getRole(), jwtToken);
     }

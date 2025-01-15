@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class LoginRequestDTO {
-    private String identificationNumber;
+    // personalId(Member) or identificationNumber(Admin)
+    private String loginRequestId;
     private String password;
 }

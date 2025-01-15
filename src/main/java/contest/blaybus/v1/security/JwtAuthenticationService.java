@@ -25,10 +25,10 @@ public class JwtAuthenticationService {
 
     public void authenticate(final String jwtToken) {
         if (tokenProviderService.validate(jwtToken)) {
-            // JWT 토큰으로 사원번호 추출
-            String identificationNumber = tokenProviderService.extract(jwtToken);
 
-            Optional<Member> memberOptional = memberRepository.findByIdentificationNumber(identificationNumber);
+            // JWT 토큰으로 Key 추출
+            String uniqueKey = tokenProviderService.extract(jwtToken);
+            Optional<Member> memberOptional = memberRepository.findByPersonalId(uniqueKey);
 
             if (memberOptional.isPresent()) {
                 Member member = memberOptional.get();
@@ -38,7 +38,7 @@ public class JwtAuthenticationService {
                 return;
             }
 
-            Optional<Admin> adminOptional = adminRepository.findByIdentificationNumber(identificationNumber);
+            Optional<Admin> adminOptional = adminRepository.findByIdentificationNumber(uniqueKey);
             if (adminOptional.isPresent()) {
                 Admin admin = adminOptional.get();
                 List<GrantedAuthority> authorities = createRole(admin.getRole());
