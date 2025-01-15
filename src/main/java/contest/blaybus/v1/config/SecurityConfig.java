@@ -1,5 +1,7 @@
 package contest.blaybus.v1.config;
 
+import contest.blaybus.v1.domain.Role;
+import contest.blaybus.v1.security.JwtAuthenticationFilter;
 import contest.blaybus.v1.security.handler.AuthAccessDeniedHandler;
 import contest.blaybus.v1.security.handler.AuthEntryPointHandler;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -18,6 +21,7 @@ public class SecurityConfig {
 
     private final AuthEntryPointHandler authEntryPointHandler;
     private final AuthAccessDeniedHandler accessDeniedHandler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -37,9 +41,15 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/swagger-ui/**", // Swagger UI 경로
                                 "/v3/api-docs/**", // OpenAPI 경로
-                                "/swagger-resources/**"
+                                "/swagger-resources/**",
+                                "/auth/**",
+                                "/error"
                         ).permitAll()
-                        .requestMatchers("/auth/**").permitAll() // 로그인 및 회원가입 허용
+
+                        .requestMatchers(
+                                "/admin/**"
+                        )
+                        .hasAnyRole(Role.TYPE_ADMIN.name())
                         .anyRequest().authenticated() // 그 외 요청 인증 필요
         );
 
@@ -48,6 +58,8 @@ public class SecurityConfig {
                         .authenticationEntryPoint(authEntryPointHandler)
                         .accessDeniedHandler(accessDeniedHandler)
         );
+
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -51,7 +51,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 "/swagger-ui/**", // Swagger UI 경로
                 "/v3/api-docs/**", // OpenAPI 경로
                 "/swagger-resources/**", // Swagger 리소스 경로
-                "/auth/**"
+                "/auth/**",
+                "/error"
         };
         return Arrays.stream(publicUri)
                 .anyMatch(requestURI::startsWith);
