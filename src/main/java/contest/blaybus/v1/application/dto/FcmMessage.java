@@ -27,5 +27,4 @@ public class FcmMessage {
         private String title;
         private String body;
     }
-
 }

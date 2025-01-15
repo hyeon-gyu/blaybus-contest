@@ -30,6 +30,7 @@ public class Member {
     private Long id;
 
     private String identificationNumber; // 사원번호
+    private String personalId; // 아이디
     private String password; // 비밀번호
     private String name; // 성함
 
@@ -49,7 +50,6 @@ public class Member {
     @Temporal(TemporalType.DATE)
     private Date effectiveDate; // 근무시작일
 
-
     private long totalExp; // 모든 년도 총 누적 경험치
 
     private String fcmToken; // 개인 기기 고유값
@@ -61,10 +61,11 @@ public class Member {
     private List<ExperiencePointHistory> experiencePointHistories = new ArrayList<>();
 
     @Builder
-    public Member(String name, Team team, String identificationNumber, String pwd, JobType jobType, Date date) { // 신규 사원 등록
+    public Member(String name, Team team, String identificationNumber, String personalId, String pwd, JobType jobType, Date date) { // 신규 사원 등록
         this.name = name;
         this.team = team;
         this.identificationNumber = identificationNumber;
+        this.personalId = personalId;
         this.password = pwd;
         this.effectiveDate = date;
         this.jobType = jobType;
@@ -77,5 +78,5 @@ public class Member {
     }
     public void updatePwd(String pwd) {this.password = pwd; }
     public void updateProfileImg(String url) {this.profileImg = url; }
-    public void updateFcmToken(String uuid) {this.fcmToken = uuid; }
+    public void updateFcmToken(String fcmToken) {this.fcmToken = fcmToken; }
 }

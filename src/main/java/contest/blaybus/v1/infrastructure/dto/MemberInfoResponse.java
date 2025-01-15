@@ -12,6 +12,7 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class MemberInfoResponse {
 
+    private Long memberId;
     private String identificationNumber; // 사원번호
     private String team; // 소속
     private String name; // 성함
@@ -21,6 +22,7 @@ public class MemberInfoResponse {
 
     public static MemberInfoResponse fromEntity(Member member) {
         return MemberInfoResponse.builder()
+                .memberId(member.getId())
                 .identificationNumber(member.getIdentificationNumber())
                 .team(member.getTeam().getDisplayName())
                 .name(member.getName())
