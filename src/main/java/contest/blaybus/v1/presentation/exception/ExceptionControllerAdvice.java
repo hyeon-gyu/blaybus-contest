@@ -1,5 +1,6 @@
 package contest.blaybus.v1.presentation.exception;
 
+import contest.blaybus.v1.application.exception.AlreadyOurMemberException;
 import contest.blaybus.v1.common.ApiResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -42,5 +43,10 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(LoginFailException.class)
     public ResponseEntity<ApiResponse<?>> handleLoginException(LoginFailException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.fail("로그인에 실패했습니다."));
+    }
+
+    @ExceptionHandler(AlreadyOurMemberException.class)
+    public ResponseEntity<ApiResponse<?>> handleAlreadyOutMemberException(AlreadyOurMemberException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.fail(e.getMessage()));
     }
 }

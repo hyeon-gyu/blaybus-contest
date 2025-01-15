@@ -1,5 +1,6 @@
 package contest.blaybus.v1.application;
 
+import contest.blaybus.v1.application.exception.AlreadyOurMemberException;
 import contest.blaybus.v1.domain.Admin;
 import contest.blaybus.v1.domain.JobType;
 import contest.blaybus.v1.domain.Member;
@@ -40,6 +41,11 @@ public class AdminServiceImpl implements AdminService {
     @Transactional
     public String addMember(NewMemberDTO dto) throws ParseException {
         String encodePassword = passwordEncoder.encode(dto.pwd());
+
+        Boolean isExists = memberRepository.existsByPersonalId(dto.id());
+        if (isExists) {
+            throw new AlreadyOurMemberException(dto.id());
+        }
 
         final Member newMember = Member.builder()
                 .name(dto.name())
