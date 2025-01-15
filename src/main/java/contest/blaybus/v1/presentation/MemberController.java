@@ -65,7 +65,7 @@ public class MemberController {
         return ApiResponse.success(memberService.updateProfileImg(dto));
     }
 
-    @Operation(summary = "멤버별 UUID 업데이트", description = "FCM 푸시 알림을 위해서 앱 이용자의 기기 고유값을 저장하고 있어야합니다.")
+    @Operation(summary = "멤버별  업데이트", description = "FCM 푸시 알림을 위해서 앱 이용자의 기기 고유값을 저장하고 있어야합니다.")
     @PostMapping("/uuid")
     public ApiResponse<String> updateUuid(
             @RequestBody NewUuidDTO dto) {
