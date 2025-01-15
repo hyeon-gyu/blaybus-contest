@@ -29,7 +29,7 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    @PostMapping("/")
+    @PostMapping
     @Operation(summary = "신규 사원 생성", description = "어드민 신규사원 생성 API 입니다. 입사일은 2024-01-01 형식으로 보내야합니다.")
     public ApiResponse<String> addMember (
             @RequestBody NewMemberDTO dto) throws ParseException {
