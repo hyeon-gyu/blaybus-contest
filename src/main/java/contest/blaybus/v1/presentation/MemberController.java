@@ -71,10 +71,4 @@ public class MemberController {
             @RequestBody NewUuidDTO dto) {
         return ApiResponse.success(memberService.updateFcmToken(dto));
     }
-
-    @Operation(summary = "프로필 이미지 목록 조회 API", description = "구성원 정보 설정 - 프로필 이미지 목록 조회 API입니다.")
-    @GetMapping("/profile")
-    public ApiResponse<List<String>> getProfileImgList(){
-        return ApiResponse.success(imageService.getProfileImageUrls());
-    }
 }
