@@ -15,5 +15,5 @@ public interface MemberService {
 
     String updateProfileImg(NewProfileImageDTO dto);
 
-    String updateUuid(NewUuidDTO dto);
+    String updateFcmToken(NewUuidDTO dto);
 }
