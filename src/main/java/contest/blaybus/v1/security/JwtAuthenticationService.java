@@ -51,7 +51,7 @@ public class JwtAuthenticationService {
     // 우리의 Role을 Spring에 맞게 변환
     private List<GrantedAuthority> createRole(Role role) {
         // [USER_TYPE]
-        return Collections.singletonList(new SimpleGrantedAuthority(role.name()));
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
     private UsernamePasswordAuthenticationToken createSpringToken(Object principal, String jwtToken, List<GrantedAuthority> authorities) {
