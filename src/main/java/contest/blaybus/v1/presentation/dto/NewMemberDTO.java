@@ -10,6 +10,8 @@ public record NewMemberDTO(
         String team,
         @NotBlank(message = "사번은 필수 입력사항입니다.")
         String number,
+        @NotBlank(message = "아이디은 필수 입력사항입니다.")
+        String id,
         @NotBlank(message = "비밀번호는 필수 입력사항입니다.")
         String pwd,
         @NotBlank(message = "직군은 필수 입력사항입니다.")
