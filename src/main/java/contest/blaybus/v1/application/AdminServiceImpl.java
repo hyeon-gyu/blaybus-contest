@@ -35,6 +35,7 @@ public class AdminServiceImpl implements AdminService {
     @Value("${admin.password}")
     private String adminPassWord;
 
+    @Transactional
     public String addMember(NewMemberDTO dto) throws ParseException {
         String encodePassword = passwordEncoder.encode(dto.pwd());
 
