@@ -46,8 +46,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     private void checkPassword(String requestPassword, String password) {
-        String encodePassword = passwordEncoder.encode(requestPassword);
-        boolean isMatch = passwordEncoder.matches(encodePassword, password);
+        boolean isMatch = passwordEncoder.matches(requestPassword, password);
         if (!isMatch) {
             throw new LoginFailException();
         }
