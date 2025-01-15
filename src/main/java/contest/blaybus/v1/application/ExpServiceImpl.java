@@ -6,6 +6,7 @@ import contest.blaybus.v1.domain.Member;
 import contest.blaybus.v1.domain.repository.ExpHistoryRepository;
 import contest.blaybus.v1.domain.repository.ExpRepository;
 import contest.blaybus.v1.domain.repository.MemberRepository;
+import contest.blaybus.v1.infrastructure.dto.ExpBarResponse;
 import contest.blaybus.v1.infrastructure.dto.ExpHistoryResponse;
 import contest.blaybus.v1.infrastructure.dto.ExpStatusResponse;
 import contest.blaybus.v1.infrastructure.dto.RecentExpInfoResponse;
@@ -71,7 +72,7 @@ public class ExpServiceImpl implements ExpService {
     }
 
 
-    public Long getExpBar(Long memberId) {
+    public ExpBarResponse getExpBar(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("Member not found"));
         // 작년까지 누적된 경험치 계산
@@ -79,17 +80,23 @@ public class ExpServiceImpl implements ExpService {
         // 현재 멤버의 레벨의 총 필요 경험치 산정
         final long expRequiredForNextLevel = LevelCheckUtil.getExpRequiredForNextLevel(member);
         double percentage = (totalExp.doubleValue() / expRequiredForNextLevel) * 100;
-        return Math.round(percentage);
+        return ExpBarResponse.builder()
+                .percent(Math.round(percentage))
+                .totalExp(totalExp)
+                .build();
     }
 
-    public Long getExpBarThisYear(Long memberId) {
+    public ExpBarResponse getExpBarThisYear(Long memberId) {
         // experiencePoint 테이블에서 작년 날짜 기준 expTotal 값 조회
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("Member not found"));
         final Long totalExpThisYear = expRepository.findTotalExpByMemberAndYear(member, LocalDate.now().getYear())
                 .orElseThrow(() -> new EmptyDataException("조회되는 값이 없습니다."));
         double percentage = (totalExpThisYear.doubleValue() / medianAverageExp) * 100;
-        return Math.round(percentage);
+        return ExpBarResponse.builder()
+                .percent(Math.round(percentage))
+                .totalExp(totalExpThisYear)
+                .build();
     }
 
     public List<ExpHistoryResponse> getExpHistoryPerCategory(Long memberId, String category, String order) {

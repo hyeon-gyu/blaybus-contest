@@ -51,7 +51,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Transactional
-    public String updateUuid(NewUuidDTO dto) {
+    public String updateFcmToken(NewUuidDTO dto) {
         Member member = memberRepository.findById(dto.memberId()).orElseThrow(EntityNotFoundException::new);
         if(Objects.equals(member.getFcmToken(), dto.uuid())) {
             return "동일한 UUID입니다.";

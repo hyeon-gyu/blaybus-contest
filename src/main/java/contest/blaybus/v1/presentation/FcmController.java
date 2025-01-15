@@ -29,4 +29,9 @@ public class FcmController {
         return ApiResponse.success("성공");
     }
 
+    @GetMapping("/test2")
+    public void test2() throws Exception {
+        throw new Exception("테스트에러");
+    }
+
 }
