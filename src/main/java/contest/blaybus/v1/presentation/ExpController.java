@@ -3,14 +3,12 @@ package contest.blaybus.v1.presentation;
 
 import contest.blaybus.v1.application.ExpService;
 import contest.blaybus.v1.common.ApiResponse;
+import contest.blaybus.v1.infrastructure.dto.ExpHistoryResponse;
 import contest.blaybus.v1.infrastructure.dto.ExpStatusResponse;
 import contest.blaybus.v1.infrastructure.dto.RecentExpInfoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,13 +37,6 @@ public class ExpController {
         return ApiResponse.success(expService.getRecentExpInfo(memberId));
     }
 
-    @Operation(summary = "획득 경험치 목록 조회", description = "획득 경험치 목록 조회")
-    @GetMapping("/list/{memberId}")
-    public ApiResponse<List<RecentExpInfoResponse>> getRecentExpInfoList(
-            @PathVariable(value = "memberId") Long memberId) {
-        return ApiResponse.success(expService.getRecentExpInfoList(memberId));
-    }
-
     @Operation(summary = "경험치 Bar (작년까지 누적)", description = "작년까지 누적된 경험치 / 해당 레벨의 총 필요 경험치")
     @GetMapping("/bar/{memberId}")
     public ApiResponse<Long> getExpBar(
@@ -60,6 +51,14 @@ public class ExpController {
         return ApiResponse.success(expService.getExpBarThisYear(memberId));
     }
 
+    @Operation(summary = "경험치 내역 카테고리별, 시간별 조회", description = "category 목록 : all(전체), pf(인사평가), job(직무), ld(리더), co(전사) & order 목록 : desc(최신순), asc(오래된순)")
+    @GetMapping("/list/{memberId}")
+    public ApiResponse<List<ExpHistoryResponse>> getExpHistoryPerCategory(
+            @PathVariable(value = "memberId") Long memberId,
+            @RequestParam(value = "category") String category,
+            @RequestParam(value = "order") String order) {
+        return ApiResponse.success(expService.getExpHistoryPerCategory(memberId, category, order));
+    }
 
 
 }

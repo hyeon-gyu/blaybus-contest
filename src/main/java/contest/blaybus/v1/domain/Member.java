@@ -50,7 +50,7 @@ public class Member {
     private Date effectiveDate; // 근무시작일
 
 
-    private long totalExp; // 총 누적 경험치
+    private long totalExp; // 모든 년도 총 누적 경험치
 
     private String fcmToken; // 개인 기기 고유값
 
