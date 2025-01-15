@@ -36,12 +36,13 @@ public class AdminServiceImpl implements AdminService {
     private String adminPassWord;
 
     public String addMember(NewMemberDTO dto) throws ParseException {
+        String encodePassword = passwordEncoder.encode(dto.pwd());
 
         final Member newMember = Member.builder()
                 .name(dto.name())
                 .team(Team.parsing(dto.team()))
                 .identificationNumber(dto.number())
-                .pwd(dto.pwd())
+                .pwd(encodePassword)
                 .jobType(JobType.parsing(dto.jobType()))
                 .date((new SimpleDateFormat("yyyy-MM-dd")).parse(dto.date()))
                 .build();
