@@ -36,7 +36,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public LoginResponseDTO memberLogin(LoginRequestDTO request) {
-        Member member = memberRepository.findByIdentificationNumber(request.getLoginRequestId())
+        Member member = memberRepository.findByPersonalId(request.getLoginRequestId())
                 .orElseThrow(EntityNotFoundException::new);
 
         checkPassword(request.getPassword(), member.getPassword());

@@ -6,6 +6,7 @@ import contest.blaybus.v1.infrastructure.dto.PostListResponseDTO;
 import contest.blaybus.v1.infrastructure.dto.PostResponseDTO;
 import contest.blaybus.v1.presentation.dto.CreatePostRequestDTO;
 import contest.blaybus.v1.presentation.dto.UpdatePostRequestDTO;
+import contest.blaybus.v1.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,43 +20,34 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
     private final PostService postService;
 
-    @Operation(summary = "게시글 작성", description = "Admin ID를 쿼리 파라미터로 받아 게시글을 작성하는 API입니다.(수정 예정)")
+    @Operation(summary = "게시글 작성")
     @PostMapping
-    public ApiResponse<PostResponseDTO> createPost(
-            @Parameter(description = "작성자(Admin)의 ID", required = true)
-            @RequestParam Long adminId,
-            @RequestBody CreatePostRequestDTO requestDTO
-    ) {
+    public ApiResponse<PostResponseDTO> createPost(@RequestBody CreatePostRequestDTO requestDTO) {
+        Long adminId = SecurityUtil.getCurrentAdmin().getId();
         return ApiResponse.success(postService.createPost(requestDTO, adminId));
     }
 
-    @Operation(summary = "게시글 수정", description = "Admin ID를 쿼리 파라미터로 받고 게시글 ID와 수정할 내용을 받아 게시글을 수정합니다.(수정 예정)")
+    @Operation(summary = "게시글 수정")
     @PutMapping("/{postId}")
     public ApiResponse<PostResponseDTO> updatePost(
-            @Parameter(description = "작성자(Admin)의 ID", required = true)
-            @RequestParam Long adminId,
             @PathVariable Long postId,
             @RequestBody UpdatePostRequestDTO requestDTO
     ) {
+        Long adminId = SecurityUtil.getCurrentAdmin().getId();
         return ApiResponse.success(postService.updatePost(adminId, postId, requestDTO));
     }
 
-    @Operation(summary = "게시글 삭제", description = "Admin ID를 쿼리 파라미터로 받아 게시글 ID를 통해 특정 게시글을 삭제합니다.(수정 예정)")
+    @Operation(summary = "게시글 삭제")
     @DeleteMapping("/{postId}")
-    public ApiResponse<Void> deletePost(
-            @Parameter(description = "작성자(Admin)의 ID", required = true)
-            @RequestParam Long adminId,
-            @PathVariable Long postId
-    ) {
+    public ApiResponse<Void> deletePost(@PathVariable Long postId) {
+        Long adminId = SecurityUtil.getCurrentAdmin().getId();
         postService.deletePost(adminId, postId);
         return ApiResponse.success(null);
     }
 
     @Operation(summary = "게시글 단건 조회", description = "게시글 ID를 받아 게시글을 조회합니다.")
     @GetMapping("/{postId}")
-    public ApiResponse<PostResponseDTO> singlePost(
-            @PathVariable Long postId
-    ) {
+    public ApiResponse<PostResponseDTO> singlePost(@PathVariable Long postId) {
         return ApiResponse.success(postService.getPostById(postId));
     }
 
