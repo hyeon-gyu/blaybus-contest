@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Builder;
 import lombok.Getter;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
@@ -25,4 +26,12 @@ public class Admin {
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
     private List<Post> postList = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.TYPE_ADMIN;
+
+    @Builder
+    public Admin(String identificationNumber, String password) {
+        this.identificationNumber = identificationNumber;
+        this.password = password;
+    }
 }

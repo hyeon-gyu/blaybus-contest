@@ -38,4 +38,9 @@ public class ExceptionControllerAdvice {
     public ResponseEntity<ApiResponse<?>> handleIllegalArgumentException(IllegalArgumentException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.fail(e.getMessage()));
     }
+
+    @ExceptionHandler(LoginFailException.class)
+    public ResponseEntity<ApiResponse<?>> handleLoginException(LoginFailException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.fail("로그인에 실패했습니다."));
+    }
 }

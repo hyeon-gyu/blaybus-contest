@@ -2,14 +2,12 @@ package contest.blaybus.v1.domain.repository;
 
 import contest.blaybus.v1.domain.Member;
 import contest.blaybus.v1.domain.Team;
-import org.jetbrains.annotations.NotNull;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -21,6 +19,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     List<Member> findByTeam(Team team);
 
-    List<Member> findByIdentificationNumber(String number);
     List<Member> findByName(String name);
+
+    Optional<Member> findByIdentificationNumber(String identificationNumber);
 }

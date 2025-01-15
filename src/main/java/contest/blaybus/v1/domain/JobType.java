@@ -28,7 +28,7 @@ public enum JobType {
         return Stream.of(JobType.values())
                 .filter(jobType -> jobType.getDescription().equals(inputValue))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("올바른 직군을 입력하세요"));
+                .orElseThrow(() -> new IllegalArgumentException("올바른 직군을 입력하세요"));
     }
 
 

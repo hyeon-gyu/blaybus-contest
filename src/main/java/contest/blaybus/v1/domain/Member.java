@@ -50,6 +50,9 @@ public class Member {
     @Temporal(TemporalType.DATE)
     private Date effectiveDate; // 근무시작일
 
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.TYPE_USER;
+
     private long totalExp; // 모든 년도 총 누적 경험치
 
     private String fcmToken; // 개인 기기 고유값
