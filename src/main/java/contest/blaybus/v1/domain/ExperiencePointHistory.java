@@ -2,6 +2,8 @@ package contest.blaybus.v1.domain;
 
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +26,7 @@ public class ExperiencePointHistory { // 최근 획득한 경험치 조회용 ( 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Enumerated(EnumType.STRING)
     private ExpType expType; // 경험치 카테고리
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -5,6 +5,12 @@ import contest.blaybus.v1.domain.Member;
 import contest.blaybus.v1.domain.Team;
 import contest.blaybus.v1.infrastructure.dto.MemberInfoResponse;
 import contest.blaybus.v1.presentation.dto.CheckPwdDTO;
+import contest.blaybus.v1.presentation.dto.ModifyDateDTO;
+import contest.blaybus.v1.presentation.dto.ModifyJobTypeDTO;
+import contest.blaybus.v1.presentation.dto.ModifyNameDTO;
+import contest.blaybus.v1.presentation.dto.ModifyNumberDTO;
+import contest.blaybus.v1.presentation.dto.ModifyPwdDTO;
+import contest.blaybus.v1.presentation.dto.ModifyTeamDTO;
 import contest.blaybus.v1.presentation.dto.NewMemberDTO;
 import jakarta.persistence.EnumType;
 
@@ -35,4 +41,16 @@ public interface AdminService {
     List<MemberInfoResponse> searchByTeam(String team);
 
     List<MemberInfoResponse> searchByNameOrNumber(String keyword);
+
+    Boolean modifyName(ModifyNameDTO dto);
+
+    Boolean modifyTeam(ModifyTeamDTO dto);
+
+    Boolean modifyNumber(ModifyNumberDTO dto);
+
+    Boolean modifyJobType(ModifyJobTypeDTO dto);
+
+    Boolean modifyPwd(ModifyPwdDTO dto);
+
+    Boolean modifyDate(ModifyDateDTO dto) throws ParseException;
 }
