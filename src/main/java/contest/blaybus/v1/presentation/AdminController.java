@@ -5,6 +5,7 @@ import com.google.protobuf.Api;
 import contest.blaybus.v1.application.AdminService;
 import contest.blaybus.v1.common.ApiResponse;
 import contest.blaybus.v1.infrastructure.dto.MemberInfoResponse;
+import contest.blaybus.v1.presentation.dto.AdminCheckDupPwdDTO;
 import contest.blaybus.v1.presentation.dto.CheckPwdDTO;
 import contest.blaybus.v1.presentation.dto.ModifyDateDTO;
 import contest.blaybus.v1.presentation.dto.ModifyJobTypeDTO;
@@ -124,4 +125,10 @@ public class AdminController {
         return ApiResponse.success(adminService.modifyDate(dto));
     }
 
+    @PostMapping("/pwd/check")
+    @Operation(summary = "구성원 정보 설정 - 기존 비밀번호와 중복 여부 조회 API", description = "중복이면 true, 중복이 아니라면 false입니다.")
+    public ApiResponse<Boolean> checkPwd(
+            @RequestBody AdminCheckDupPwdDTO dto) {
+        return ApiResponse.success(adminService.checkDupPwd(dto));
+    }
 }

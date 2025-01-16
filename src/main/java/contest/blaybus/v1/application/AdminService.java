@@ -4,6 +4,7 @@ import contest.blaybus.v1.domain.JobType;
 import contest.blaybus.v1.domain.Member;
 import contest.blaybus.v1.domain.Team;
 import contest.blaybus.v1.infrastructure.dto.MemberInfoResponse;
+import contest.blaybus.v1.presentation.dto.AdminCheckDupPwdDTO;
 import contest.blaybus.v1.presentation.dto.CheckPwdDTO;
 import contest.blaybus.v1.presentation.dto.ModifyDateDTO;
 import contest.blaybus.v1.presentation.dto.ModifyJobTypeDTO;
@@ -53,4 +54,6 @@ public interface AdminService {
     Boolean modifyPwd(ModifyPwdDTO dto);
 
     Boolean modifyDate(ModifyDateDTO dto) throws ParseException;
+
+    Boolean checkDupPwd(AdminCheckDupPwdDTO dto);
 }
