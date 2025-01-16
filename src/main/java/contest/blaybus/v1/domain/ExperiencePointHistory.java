@@ -37,13 +37,15 @@ public class ExperiencePointHistory { // 최근 획득한 경험치 조회용 ( 
     private Date date; // 경험치 획득 일자
     private String content; // 내용
     private long point; // 획득 경험치 수치
+    private String coin; // 코인 정보
 
     @Builder
-    public ExperiencePointHistory(Member member, String content, long point, ExpType expType) {
+    public ExperiencePointHistory(Member member, String content, long point, ExpType expType, String coin) {
         this.date = new Date();
         this.content = content;
         this.point = point;
         this.expType = expType;
+        this.coin = coin;
         this.assignMember(member);
     }
 

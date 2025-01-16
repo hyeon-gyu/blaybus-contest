@@ -13,12 +13,14 @@ public class ExpHistoryResponse {
     private String date;
     private String content;
     private long point;
+    private String coin;
 
-    public ExpHistoryResponse(ExpType expType, String date, String content, long point) {
+    public ExpHistoryResponse(ExpType expType, String date, String content, long point, String coin) {
         this.expType = expType;
         this.date = date;
         this.content = content;
         this.point = point;
+        this.coin = coin;
     }
 
     public static ExpHistoryResponse fromEntity(ExperiencePointHistory history) {
@@ -27,6 +29,7 @@ public class ExpHistoryResponse {
                 .date(history.getDate().toString())
                 .content(history.getContent())
                 .point(history.getPoint())
+                .coin(history.getCoin())
                 .build();
     }
 }

@@ -16,7 +16,7 @@ public interface ExpHistoryRepository extends JpaRepository<ExperiencePointHisto
 
     Optional<ExperiencePointHistory> findFirstByMemberOrderByDateDesc(Member member);
 
-    List<ExperiencePointHistory> findByMemberOrderByDateDesc(Member member, Sort sort);
+    List<ExperiencePointHistory> findByMember(Member member, Sort sort);
 
-    List<ExperiencePointHistory> findByMemberAndExpTypeOrderByDateDesc(Member member, ExpType expType, Sort sort);
+    List<ExperiencePointHistory> findByMemberAndExpType(Member member, ExpType expType, Sort sort);
 }

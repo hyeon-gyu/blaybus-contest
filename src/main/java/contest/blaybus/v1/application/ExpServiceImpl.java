@@ -119,10 +119,10 @@ public class ExpServiceImpl implements ExpService {
         Sort sort = "desc".equalsIgnoreCase(order) ? Sort.by("date").descending() : Sort.by("date").ascending();
         List<ExperiencePointHistory> histories;
         if (category.equals("all")) {
-            histories = expHistoryRepository.findByMemberOrderByDateDesc(member, sort);
+            histories = expHistoryRepository.findByMember(member, sort);
         } else {
-            ExpType expType = ExpType.valueOf(category.toUpperCase());
-            histories = expHistoryRepository.findByMemberAndExpTypeOrderByDateDesc(member, expType, sort);
+            ExpType expType = ExpType.fromCode(category);
+            histories = expHistoryRepository.findByMemberAndExpType(member, expType, sort);
         }
 
         return histories.stream()
