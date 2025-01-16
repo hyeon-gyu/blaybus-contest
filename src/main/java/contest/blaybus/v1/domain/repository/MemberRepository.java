@@ -24,4 +24,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByIdentificationNumber(String identificationNumber);
 
     Optional<Member> findByPersonalId(String personalId);
+
+    @Query("SELECT m FROM Member m WHERE m.fcmToken IS NOT NULL")
+    List<Member> findAllFcmToken();
 }

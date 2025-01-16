@@ -13,6 +13,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @Tag(name = "게시글", description = "게시글 관련 API입니다.")
 @RestController
 @RequestMapping("/posts")
@@ -22,7 +24,7 @@ public class PostController {
 
     @Operation(summary = "게시글 작성")
     @PostMapping
-    public ApiResponse<PostResponseDTO> createPost(@RequestBody CreatePostRequestDTO requestDTO) {
+    public ApiResponse<PostResponseDTO> createPost(@RequestBody CreatePostRequestDTO requestDTO) throws IOException {
         Long adminId = SecurityUtil.getCurrentAdmin().getId();
         return ApiResponse.success(postService.createPost(requestDTO, adminId));
     }

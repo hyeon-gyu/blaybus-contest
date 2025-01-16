@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,11 +24,11 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final AdminRepository adminRepository;
 
-
+    private final FirebaseCloudMessageService fcmService;
     // 게시글 생성
     @Transactional
     @Override
-    public PostResponseDTO createPost(CreatePostRequestDTO requestDTO, Long adminId) {
+    public PostResponseDTO createPost(CreatePostRequestDTO requestDTO, Long adminId) throws IOException {
         // Admin ID로 Admin 엔티티 조회
         Admin admin = adminRepository.findById(adminId)
                 .orElseThrow(() -> new IllegalArgumentException("Admin not found with ID: " + adminId));
@@ -40,6 +41,8 @@ public class PostServiceImpl implements PostService {
                 .build();
 
         Post savedPost = postRepository.saveAndFlush(post);
+
+        fcmService.sendPushNotificationsToMembers(); // 신규 게시글 생성 푸시 알림
 
         return PostResponseDTO.fromEntity(savedPost);
     }
