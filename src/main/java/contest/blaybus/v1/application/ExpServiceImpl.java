@@ -3,6 +3,7 @@ package contest.blaybus.v1.application;
 import contest.blaybus.v1.domain.ExpType;
 import contest.blaybus.v1.domain.ExperiencePointHistory;
 import contest.blaybus.v1.domain.Member;
+import contest.blaybus.v1.domain.NotificationCategory;
 import contest.blaybus.v1.domain.repository.ExpHistoryRepository;
 import contest.blaybus.v1.domain.repository.ExpRepository;
 import contest.blaybus.v1.domain.repository.MemberRepository;
@@ -10,6 +11,7 @@ import contest.blaybus.v1.infrastructure.dto.ExpBarResponse;
 import contest.blaybus.v1.infrastructure.dto.ExpHistoryResponse;
 import contest.blaybus.v1.infrastructure.dto.ExpStatusResponse;
 import contest.blaybus.v1.infrastructure.dto.RecentExpInfoResponse;
+import contest.blaybus.v1.presentation.dto.NewFcmDTO;
 import contest.blaybus.v1.presentation.exception.EmptyDataException;
 import contest.blaybus.v1.util.LevelCheckUtil;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,12 +45,13 @@ public class ExpServiceImpl implements ExpService {
     public void updateMemberTotalExp(Member member) {
         LocalDate now = LocalDate.now();
         Long sumTotalExpUtilThisYear = expRepository.getSumTotalExpUtilThisYear(member, now.getYear());
-        if(!(member.getTotalExp() == sumTotalExpUtilThisYear)) {
+        if (!(member.getTotalExp() == sumTotalExpUtilThisYear)) {
             member.updateTotalExp(sumTotalExpUtilThisYear);
+            memberRepository.save(member);
         }
     }
 
-    public ExpStatusResponse getExpStatus(Long memberId) {
+    public ExpStatusResponse getExpStatus(Long memberId) throws IOException {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("Member not found"));
 
@@ -137,9 +141,9 @@ public class ExpServiceImpl implements ExpService {
         String currentLevel = member.getLevel();
         long totalExp = member.getTotalExp();
 
-        for(int i = 0; i < levels.size(); i++) {
-            if(levels.get(i).getLevel().equals(currentLevel)) {
-                if(i+1 <= levels.size()) {
+        for (int i = 0; i < levels.size(); i++) {
+            if (levels.get(i).getLevel().equals(currentLevel)) {
+                if (i + 1 <= levels.size()) {
                     final long requiredExp = levels.get(i + 1).getRequiredExp();
                     return List.of(requiredExp, requiredExp - totalExp);
                 }
@@ -149,7 +153,7 @@ public class ExpServiceImpl implements ExpService {
     }
 
     @Transactional
-    public void checkAndLevelUp(Member member) {
+    public void checkAndLevelUp(Member member) throws IOException {
         List<LevelCheckUtil.LevelInfo> levels = levelInfoMap.get(member.getJobType());
         String newLevel = member.getLevel();
         for (int i = levels.size() - 1; i >= 0; i--) {
@@ -162,7 +166,14 @@ public class ExpServiceImpl implements ExpService {
         // 레벨이 변경되었을 때만 업데이트
         if (!newLevel.equals(member.getLevel())) {
             member.updateLevel(newLevel);
+            memberRepository.save(member);
             // 여기 자리에 레벨업 푸시알림 전송 로직 넣기
+
+            fcmService.sendMessageTo(NewFcmDTO.builder()
+                    .title("레벨업")
+                    .content("\uD83C\uDF89레벨업 했어요!\uD83D\uDE80 축하드려요!")
+                    .category(NotificationCategory.LEVELUP)
+                    .build());
         }
     }
 }

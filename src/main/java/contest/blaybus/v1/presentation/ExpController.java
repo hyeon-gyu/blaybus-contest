@@ -10,6 +10,8 @@ import contest.blaybus.v1.infrastructure.dto.RecentExpInfoResponse;
 import contest.blaybus.v1.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +29,7 @@ public class ExpController {
 
     @Operation(summary = "경험치 현황 조회", description = "현재 레벨, 총 누적 경험치, 작년까지 누적된 경험치, 올해 획득한 경험치, 다음 레벨 달성에 필요한 총 경험치, 잔여 경험치")
     @GetMapping
-    public ApiResponse<ExpStatusResponse> getExp() {
+    public ApiResponse<ExpStatusResponse> getExp() throws IOException {
         Long getCurrentMemberId = SecurityUtil.getCurrentMember().getId();
         return ApiResponse.success(expService.getExpStatus(getCurrentMemberId));
     }

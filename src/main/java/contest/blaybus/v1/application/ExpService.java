@@ -5,12 +5,13 @@ import contest.blaybus.v1.infrastructure.dto.ExpHistoryResponse;
 import contest.blaybus.v1.infrastructure.dto.ExpStatusResponse;
 import contest.blaybus.v1.infrastructure.dto.RecentExpInfoResponse;
 
+import java.io.IOException;
 import java.util.List;
 
 
 public interface ExpService {
 
-    ExpStatusResponse getExpStatus(Long memberId);
+    ExpStatusResponse getExpStatus(Long memberId) throws IOException;
 
     RecentExpInfoResponse getRecentExpInfo(Long memberId);
 
