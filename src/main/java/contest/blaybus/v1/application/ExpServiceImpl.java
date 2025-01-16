@@ -36,6 +36,8 @@ public class ExpServiceImpl implements ExpService {
     private final MemberRepository memberRepository;
     private final ExpRepository expRepository;
 
+    private final FirebaseCloudMessageService fcmService;
+
     @Transactional
     public void updateMemberTotalExp(Member member) {
         LocalDate now = LocalDate.now();
@@ -160,6 +162,7 @@ public class ExpServiceImpl implements ExpService {
         // 레벨이 변경되었을 때만 업데이트
         if (!newLevel.equals(member.getLevel())) {
             member.updateLevel(newLevel);
+            // 여기 자리에 레벨업 푸시알림 전송 로직 넣기
         }
     }
 }
