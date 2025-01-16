@@ -19,4 +19,6 @@ public interface ExpRepository extends JpaRepository<ExperiencePoint, Long> {
     @Query("SELECT COALESCE(SUM(ep.totalExp), 0) FROM ExperiencePoint ep WHERE ep.member = :member AND ep.year < :currentYear")
     Long getSumTotalExpUtilLastYear(@Param("member") Member member, @Param("currentYear") int currentYear);
 
+    @Query("SELECT COALESCE(SUM(ep.totalExp), 0) FROM ExperiencePoint ep WHERE ep.member = :member AND ep.year <= :currentYear")
+    Long getSumTotalExpUtilThisYear(@Param("member") Member member, @Param("currentYear") int currentYear);
 }

@@ -71,17 +71,6 @@ public class LevelCheckUtil {
 
     }
 
-    public static void checkAndLevelUp(Member member) {
-        List<LevelInfo> levels = levelInfoMap.get(member.getJobType());
-        for (LevelInfo levelInfo : levels) {
-            if (member.getTotalExp() >= levelInfo.getRequiredExp()) {
-                member.updateLevel(levelInfo.getLevel());
-            } else {
-                break;
-            }
-        }
-    }
-
     public static long getExpRequiredForNextLevel(Member member) {
         JobType jobType = member.getJobType();
         long currentTotalExp = member.getTotalExp();
