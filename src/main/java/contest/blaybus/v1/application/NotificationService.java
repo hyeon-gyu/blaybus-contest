@@ -36,7 +36,7 @@ public class NotificationService {
                     long hoursDifference = java.time.Duration.between(notification.getDate(), now).toHours();
 
                     if (hoursDifference < 24) {
-                        if(hoursDifference == 0) {time = "1 시간 이내";}
+                        if(hoursDifference < 1) {time = "1 시간 이내";}
                         else {time = hoursDifference + "시간 전";}
                     } else {
                         time = notification.getDate().format(DateTimeFormatter.ofPattern("dd.MM.yy"));
@@ -47,6 +47,7 @@ public class NotificationService {
                             .title(notification.getTitle())
                             .content(notification.getContent())
                             .time(time)
+                            .category(notification.getCategory().toString())
                             .build();
                 })
                 .collect(Collectors.toList());
