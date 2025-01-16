@@ -4,6 +4,7 @@ import contest.blaybus.v1.application.ImageService;
 import contest.blaybus.v1.application.MemberService;
 import contest.blaybus.v1.infrastructure.dto.MemberInfoResponse;
 import contest.blaybus.v1.common.ApiResponse;
+import contest.blaybus.v1.presentation.dto.CheckPwdDTO;
 import contest.blaybus.v1.presentation.dto.NewProfileImageDTO;
 import contest.blaybus.v1.presentation.dto.NewPwdDTO;
 import contest.blaybus.v1.presentation.dto.NewUuidDTO;
@@ -46,7 +47,7 @@ public class MemberController {
 
     @Operation(summary = "마이페이지 - 기존 비밀번호와 중복 여부 조회 API", description = "마이페이지 비밀번호 중복 조회 API입니다. 중복이면 true, 중복이 아니라면 false입니다.")
     @PostMapping("/pwd/check")
-    public ApiResponse<Boolean> checkDupPwd(@RequestBody NewPwdDTO dto) {
+    public ApiResponse<Boolean> checkDupPwd(@RequestBody CheckPwdDTO dto) {
         Long currentMemberId = SecurityUtil.getCurrentMember().getId();
         return ApiResponse.success(memberService.checkDupPwd(currentMemberId, dto));
     }

@@ -4,6 +4,7 @@ package contest.blaybus.v1.application;
 import contest.blaybus.v1.infrastructure.dto.MemberInfoResponse;
 import contest.blaybus.v1.domain.Member;
 import contest.blaybus.v1.domain.repository.MemberRepository;
+import contest.blaybus.v1.presentation.dto.CheckPwdDTO;
 import contest.blaybus.v1.presentation.dto.NewPwdDTO;
 import contest.blaybus.v1.presentation.dto.NewProfileImageDTO;
 import contest.blaybus.v1.presentation.dto.NewUuidDTO;
@@ -30,14 +31,16 @@ public class MemberServiceImpl implements MemberService{
     @Transactional
     public String changePwd(Long memberId, NewPwdDTO dto) {
         Member member = memberRepository.findById(memberId).orElseThrow(EntityNotFoundException::new);
-        String encodedPassword = passwordEncoder.encode(dto.pwd());
-        member.updatePwd(encodedPassword);
-        return "성공";
+        if(passwordEncoder.matches(dto.originPwd(), member.getPassword())) {
+            member.updatePwd(passwordEncoder.encode(dto.newPwd()));
+            return "성공";
+        }
+        return "실패";
     }
 
-    public Boolean checkDupPwd(Long memberId, NewPwdDTO dto) {
+    public Boolean checkDupPwd(Long memberId, CheckPwdDTO dto) {
         Member member = memberRepository.findById(memberId).orElseThrow(EntityNotFoundException::new);
-        return member.getPassword().equals(dto.pwd());
+        return passwordEncoder.matches(dto.password(), member.getPassword());
     }
 
     @Transactional
