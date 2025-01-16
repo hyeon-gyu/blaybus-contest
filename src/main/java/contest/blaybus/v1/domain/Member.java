@@ -64,6 +64,9 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<ExperiencePointHistory> experiencePointHistories = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member")
+    private List<Notification> notifications;
+
     @Builder
     public Member(String name, Team team, String identificationNumber, String personalId, String pwd, JobType jobType, Date date) { // 신규 사원 등록
         this.name = name;

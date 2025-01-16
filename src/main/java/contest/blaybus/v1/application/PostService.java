@@ -5,8 +5,10 @@ import contest.blaybus.v1.infrastructure.dto.PostResponseDTO;
 import contest.blaybus.v1.presentation.dto.CreatePostRequestDTO;
 import contest.blaybus.v1.presentation.dto.UpdatePostRequestDTO;
 
+import java.io.IOException;
+
 public interface PostService {
-    PostResponseDTO createPost(CreatePostRequestDTO requestDTO, Long adminId);
+    PostResponseDTO createPost(CreatePostRequestDTO requestDTO, Long adminId) throws IOException;
 
     PostResponseDTO getPostById(Long postId);
 
