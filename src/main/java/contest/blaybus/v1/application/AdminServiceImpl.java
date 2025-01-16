@@ -8,6 +8,7 @@ import contest.blaybus.v1.domain.Team;
 import contest.blaybus.v1.domain.repository.AdminRepository;
 import contest.blaybus.v1.domain.repository.MemberRepository;
 import contest.blaybus.v1.infrastructure.dto.MemberInfoResponse;
+import contest.blaybus.v1.presentation.dto.AdminCheckDupPwdDTO;
 import contest.blaybus.v1.presentation.dto.CheckPwdDTO;
 import contest.blaybus.v1.presentation.dto.ModifyDateDTO;
 import contest.blaybus.v1.presentation.dto.ModifyJobTypeDTO;
@@ -211,6 +212,17 @@ public class AdminServiceImpl implements AdminService {
                     if(member.getEffectiveDate().equals(hireDate)) {return false;}
                     member.updateDate(hireDate);
                     return true;
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+    }
+
+    public Boolean checkDupPwd(AdminCheckDupPwdDTO dto) {
+        return memberRepository.findById(dto.memberId())
+                .map(member -> {
+                    if (passwordEncoder.matches(dto.pwd(), member.getPassword())) {
+                        return true;
+                    }
+                    return false;
                 })
                 .orElseThrow(() -> new EntityNotFoundException("Member not found"));
     }
