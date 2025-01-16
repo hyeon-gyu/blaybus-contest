@@ -40,13 +40,15 @@ public class MemberController {
     @Operation(summary = "마이페이지 - 비밀번호 변경 API", description = "마이페이지 비밀번호 변경 API입니다.")
     @PostMapping("/pwd")
     public ApiResponse<String> changePwd(@RequestBody NewPwdDTO dto) {
-        return ApiResponse.success(memberService.changePwd(dto));
+        Long currentMemberId = SecurityUtil.getCurrentMember().getId();
+        return ApiResponse.success(memberService.changePwd(currentMemberId, dto));
     }
 
     @Operation(summary = "마이페이지 - 기존 비밀번호와 중복 여부 조회 API", description = "마이페이지 비밀번호 중복 조회 API입니다. 중복이면 true, 중복이 아니라면 false입니다.")
     @PostMapping("/pwd/check")
     public ApiResponse<Boolean> checkDupPwd(@RequestBody NewPwdDTO dto) {
-        return ApiResponse.success(memberService.checkDupPwd(dto));
+        Long currentMemberId = SecurityUtil.getCurrentMember().getId();
+        return ApiResponse.success(memberService.checkDupPwd(currentMemberId, dto));
     }
 
     @Operation(summary = "프로필 이미지 목록 조회 API", description = "구성원 정보 설정 - 프로필 이미지 목록 조회 API입니다.")
@@ -58,12 +60,14 @@ public class MemberController {
     @Operation(summary = "프로필 이미지 적용 API", description = "구성원 정보 설정 - 프로필 이미지 선택 API입니다.")
     @PostMapping("/profile")
     public ApiResponse<String> updateProfileImg(@RequestBody NewProfileImageDTO dto) {
-        return ApiResponse.success(memberService.updateProfileImg(dto));
+        Long currentMemberId = SecurityUtil.getCurrentMember().getId();
+        return ApiResponse.success(memberService.updateProfileImg(currentMemberId, dto));
     }
 
     @Operation(summary = "멤버별 fcm token 업데이트", description = "FCM 푸시 알림을 위해서 앱 이용자의 기기 고유값을 저장하고 있어야합니다.")
     @PostMapping("/uuid")
     public ApiResponse<String> updateUuid(@RequestBody NewUuidDTO dto) {
-        return ApiResponse.success(memberService.updateFcmToken(dto));
+        Long currentMemberId = SecurityUtil.getCurrentMember().getId();
+        return ApiResponse.success(memberService.updateFcmToken(currentMemberId, dto));
     }
 }

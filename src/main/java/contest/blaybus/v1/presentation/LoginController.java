@@ -20,14 +20,14 @@ public class LoginController {
 
     private final LoginService loginService;
 
-    @Operation(summary = "Admin 로그인")
+    @Operation(summary = "Admin 로그인", description = "관리자 로그인은 사원번호, 비밀번호로 로그인합니다.")
     @PostMapping("/admin/login")
     public ApiResponse<LoginResponseDTO> adminLogin(@RequestBody LoginRequestDTO request) {
         LoginResponseDTO loginResponseDTO = loginService.adminLogin(request);
         return ApiResponse.success(loginResponseDTO);
     }
 
-    @Operation(summary = "Member 로그인")
+    @Operation(summary = "Member 로그인", description = "일반 사원 로그인은 개인 아이디, 비밀번호로 로그인합니다.")
     @PostMapping("/member/login")
     public ApiResponse<LoginResponseDTO> memberLogin(@RequestBody LoginRequestDTO request) {
         LoginResponseDTO loginResponseDTO = loginService.memberLogin(request);

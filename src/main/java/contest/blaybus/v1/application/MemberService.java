@@ -9,11 +9,11 @@ public interface MemberService {
 
     MemberInfoResponse getMemberInfo(Long memberId);
 
-    String changePwd(NewPwdDTO dto);
+    String changePwd(Long memberId, NewPwdDTO dto);
 
-    Boolean checkDupPwd(NewPwdDTO dto);
+    Boolean checkDupPwd(Long memberId, NewPwdDTO dto);
 
-    String updateProfileImg(NewProfileImageDTO dto);
+    String updateProfileImg(Long memberId, NewProfileImageDTO dto);
 
-    String updateFcmToken(NewUuidDTO dto);
+    String updateFcmToken(Long memberId, NewUuidDTO dto);
 }

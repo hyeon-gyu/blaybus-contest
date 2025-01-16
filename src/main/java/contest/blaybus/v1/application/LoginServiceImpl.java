@@ -42,7 +42,7 @@ public class LoginServiceImpl implements LoginService {
         checkPassword(request.getPassword(), member.getPassword());
         String jwtToken = tokenProviderService.create(request.getLoginRequestId());
 
-        return new LoginResponseDTO("Admin logged in successfully", member.getRole(), jwtToken);
+        return new LoginResponseDTO("Member logged in successfully", member.getRole(), jwtToken);
     }
 
     private void checkPassword(String requestPassword, String password) {

@@ -28,21 +28,21 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Transactional
-    public String changePwd(NewPwdDTO dto) {
-        Member member = memberRepository.findById(dto.memberId()).orElseThrow(EntityNotFoundException::new);
+    public String changePwd(Long memberId, NewPwdDTO dto) {
+        Member member = memberRepository.findById(memberId).orElseThrow(EntityNotFoundException::new);
         String encodedPassword = passwordEncoder.encode(dto.pwd());
         member.updatePwd(encodedPassword);
         return "성공";
     }
 
-    public Boolean checkDupPwd(NewPwdDTO dto) {
-        Member member = memberRepository.findById(dto.memberId()).orElseThrow(EntityNotFoundException::new);
+    public Boolean checkDupPwd(Long memberId, NewPwdDTO dto) {
+        Member member = memberRepository.findById(memberId).orElseThrow(EntityNotFoundException::new);
         return member.getPassword().equals(dto.pwd());
     }
 
     @Transactional
-    public String updateProfileImg(NewProfileImageDTO dto) {
-        Member member = memberRepository.findById(dto.memberId()).orElseThrow(EntityNotFoundException::new);
+    public String updateProfileImg(Long memberId, NewProfileImageDTO dto) {
+        Member member = memberRepository.findById(memberId).orElseThrow(EntityNotFoundException::new);
         if(Objects.equals(member.getProfileImg(), dto.url())) {
             return "동일한 주소입니다.";
         }
@@ -51,12 +51,12 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Transactional
-    public String updateFcmToken(NewUuidDTO dto) {
-        Member member = memberRepository.findById(dto.memberId()).orElseThrow(EntityNotFoundException::new);
-        if(Objects.equals(member.getFcmToken(), dto.uuid())) {
-            return "동일한 UUID입니다.";
+    public String updateFcmToken(Long memberId, NewUuidDTO dto) {
+        Member member = memberRepository.findById(memberId).orElseThrow(EntityNotFoundException::new);
+        if(Objects.equals(member.getFcmToken(), dto.token())) {
+            return "동일한 FCM 토큰입니다.";
         }
-        member.updateFcmToken(dto.uuid());
+        member.updateFcmToken(dto.token());
         return "성공";
     }
 }
