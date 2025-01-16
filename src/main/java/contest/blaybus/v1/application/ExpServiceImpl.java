@@ -16,6 +16,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -34,13 +35,23 @@ public class ExpServiceImpl implements ExpService {
     private final MemberRepository memberRepository;
     private final ExpRepository expRepository;
 
+    @Transactional
+    public void updateMemberTotalExp(Member member) {
+        LocalDate now = LocalDate.now();
+        Long sumTotalExpUtilThisYear = expRepository.getSumTotalExpUtilThisYear(member, now.getYear());
+        if(!(member.getTotalExp() == sumTotalExpUtilThisYear)) {
+            member.updateTotalExp(sumTotalExpUtilThisYear);
+        }
+    }
+
     public ExpStatusResponse getExpStatus(Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("Member not found"));
 
-
-        // 작년 누적 경험치
+        updateMemberTotalExp(member); // 멤버 테이블 경험치 총 누적액 업데이트
+        checkAndLevelUp(member); // 멤버 레벨 업데이트
         LocalDate now = LocalDate.now();
+        // 작년 누적 경험치
         long lastYearExp = expRepository.findTotalExpByMemberAndYear(member, now.getYear() - 1)
                 .orElseGet(() -> 0L);
         // 올해 획득한 경험치
@@ -130,5 +141,22 @@ public class ExpServiceImpl implements ExpService {
             }
         }
         return List.of(0L, 0L);
+    }
+
+    @Transactional
+    public void checkAndLevelUp(Member member) {
+        List<LevelCheckUtil.LevelInfo> levels = levelInfoMap.get(member.getJobType());
+        String newLevel = member.getLevel();
+        for (int i = levels.size() - 1; i >= 0; i--) {
+            LevelCheckUtil.LevelInfo levelInfo = levels.get(i);
+            if (member.getTotalExp() >= levelInfo.getRequiredExp()) {
+                newLevel = levelInfo.getLevel();
+                break;
+            }
+        }
+        // 레벨이 변경되었을 때만 업데이트
+        if (!newLevel.equals(member.getLevel())) {
+            member.updateLevel(newLevel);
+        }
     }
 }

@@ -94,4 +94,5 @@ public class Member {
     public void updateDate(Date date) {
         this.effectiveDate = date;
     }
+    public void updateTotalExp(long totalExp) {this.totalExp = totalExp;}
 }
