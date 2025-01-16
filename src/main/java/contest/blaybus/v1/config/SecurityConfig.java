@@ -44,7 +44,8 @@ public class SecurityConfig {
                                 "/v3/api-docs/**", // OpenAPI 경로
                                 "/swagger-resources/**",
                                 "/auth/**",
-                                "/error"
+                                "/error",
+                                "/health"
                         ).permitAll()
 
                         .requestMatchers(
