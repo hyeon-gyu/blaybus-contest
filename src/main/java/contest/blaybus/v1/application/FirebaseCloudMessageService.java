@@ -8,6 +8,7 @@ import com.google.gson.JsonParseException;
 import contest.blaybus.v1.application.dto.FcmMessage;
 import contest.blaybus.v1.domain.Member;
 import contest.blaybus.v1.domain.Notification;
+import contest.blaybus.v1.domain.NotificationCategory;
 import contest.blaybus.v1.domain.Post;
 import contest.blaybus.v1.domain.repository.MemberRepository;
 import contest.blaybus.v1.domain.repository.NotificationRepository;
@@ -72,6 +73,7 @@ public class FirebaseCloudMessageService {
                         .title("게시판")
                         .content("\uD83C\uDF89 새로운 글이 올라왔어요! \uD83D\uDCF0 확인해보세요!")
                         .date(LocalDateTime.now())
+                        .category(NotificationCategory.POST)
                         .member(member)
                         .build();
                 notificationRepository.save(newNotification);

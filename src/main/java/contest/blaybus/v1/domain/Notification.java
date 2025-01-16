@@ -2,6 +2,8 @@ package contest.blaybus.v1.domain;
 
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,16 +31,21 @@ public class Notification {
     private String content;
     private LocalDateTime date;
 
+    @Enumerated(EnumType.STRING)
+    private NotificationCategory category;
+
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
     @Builder
-    public Notification(String title, String content, LocalDateTime date, Member member) {
+    public Notification(String title, String content, NotificationCategory category,LocalDateTime date, Member member) {
         this.title = title;
         this.content = content;
         this.date = date;
+        this.category = category;
         this.member = member;
+
     }
 
     public void setMember(Member member) {
