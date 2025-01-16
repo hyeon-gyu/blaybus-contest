@@ -26,6 +26,11 @@ public record QuestWeekResponse(int week, Coin coin, int value, String team, int
         return new QuestWeekResponse(week, calculateCoin, value, "음성 1센터", 1, "생산성");
     }
 
+}
+
+
+
+
     /*
     [
         {
@@ -70,5 +75,3 @@ public record QuestWeekResponse(int week, Coin coin, int value, String team, int
         }
     ]
      */
-
-}

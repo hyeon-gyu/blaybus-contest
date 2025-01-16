@@ -1,7 +1,10 @@
 package contest.blaybus.v1.application;
 
+import contest.blaybus.v1.domain.JobQuestMonth;
 import contest.blaybus.v1.domain.JobQuestWeek;
+import contest.blaybus.v1.domain.repository.JobQuestMonthRepository;
 import contest.blaybus.v1.domain.repository.JobQuestWeekRepository;
+import contest.blaybus.v1.infrastructure.dto.QuestMonthResponse;
 import contest.blaybus.v1.infrastructure.dto.QuestWeekResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class QuestServiceImpl implements QuestService {
 
     private final JobQuestWeekRepository jobQuestWeekRepository;
+    private final JobQuestMonthRepository jobQuestMonthRepository;
 
     @Override
     public List<QuestWeekResponse> getMyQuestWeek(final Long memberId) {
@@ -23,6 +27,18 @@ public class QuestServiceImpl implements QuestService {
                         jobQuestWeek -> {
                             int value = calculate(jobQuestWeek.getProductivity());
                             return QuestWeekResponse.from(jobQuestWeek.getWeek(), value);
+                        }
+                ).toList();
+    }
+
+    @Override
+    public List<QuestMonthResponse> getMyQuestMonth(final Long memberId) {
+        List<JobQuestMonth> jobQuestMonths = jobQuestMonthRepository.findByMemberId(memberId);
+        return jobQuestMonths.stream()
+                .map(
+                        jobQuestMonth -> {
+                            int value = calculate(jobQuestMonth.getProductivity());
+                            return QuestMonthResponse.from(jobQuestMonth.getMonth(), value);
                         }
                 ).toList();
     }
