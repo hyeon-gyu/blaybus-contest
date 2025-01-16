@@ -16,7 +16,9 @@ public class MemberInfoResponse {
     private String identificationNumber; // 사원번호
     private String team; // 소속
     private String name; // 성함
-    private String character; // 캐릭터 URL
+    private String jobType; // 직군
+    @JsonInclude(JsonInclude.Include.ALWAYS)
+    private String character; // 캐릭터 URL (null이면 기본 이미지를 노출시키기로)
     private Date effectiveDate; // 근무시작일
     private String level; // 레벨
 
@@ -26,6 +28,7 @@ public class MemberInfoResponse {
                 .identificationNumber(member.getIdentificationNumber())
                 .team(member.getTeam().getDisplayName())
                 .name(member.getName())
+                .jobType(member.getJobType().getDescription())
                 .character(member.getProfileImg())
                 .effectiveDate(member.getEffectiveDate())
                 .level(member.getLevel())
