@@ -81,8 +81,22 @@ public class LevelCheckUtil {
                 return levelInfo.getRequiredExp();
             }
         }
-
-        // 만약 최고 레벨이라면 현재 경험치를 반환
+        // 현재 레벨이 최고 레벨인 경우 현재 경험치를 반환
         return currentTotalExp;
+    }
+
+    public static String getNextLevel(Member member) {
+        JobType jobType = member.getJobType();
+        String currentLevel = member.getLevel();
+        List<LevelInfo> levels = levelInfoMap.get(jobType);
+
+        for (int i = 0; i < levels.size() - 1; i++) {
+            if (levels.get(i).getLevel().equals(currentLevel)) {
+                return levels.get(i + 1).getLevel();
+            }
+        }
+
+        // 현재 레벨이 최고 레벨인 경우
+        return currentLevel;
     }
 }

@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static contest.blaybus.v1.util.LevelCheckUtil.getNextLevel;
 import static contest.blaybus.v1.util.LevelCheckUtil.levelInfoMap;
 
 
@@ -69,6 +70,8 @@ public class ExpServiceImpl implements ExpService {
                 .thisYearExp(thisYearExp)
                 .expForLevelup(requiredTotalExpForLevelUp)
                 .remainingExp(remainingExp)
+                .nextLevel(getNextLevel(member))
+                .percent((int) Math.round((double) member.getTotalExp() / requiredTotalExpForLevelUp * 100))
                 .build();
     }
 
