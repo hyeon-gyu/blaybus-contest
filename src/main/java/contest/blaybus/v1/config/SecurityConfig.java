@@ -7,6 +7,7 @@ import contest.blaybus.v1.security.handler.AuthEntryPointHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -28,7 +29,7 @@ public class SecurityConfig {
 
         // HTTP 에서는 사용하지 않음 - CSRF 보호 비활성화
         http.csrf(csrf -> csrf.disable());
-
+        http.cors(Customizer.withDefaults()); // cors 허용
         http.httpBasic(HttpBasicConfigurer::disable);
 
         // Session 사용 안함
