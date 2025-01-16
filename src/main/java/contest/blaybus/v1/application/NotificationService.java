@@ -26,14 +26,14 @@ public class NotificationService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("Member not found"));
 
-        List<Notification> notificationList = notificationRepository.findByMember(member);
+        List<Notification> notificationList = notificationRepository.findByMemberOrderByDateDesc(member);
 
         LocalDateTime now = LocalDateTime.now();
 
         return notificationList.stream()
                 .map(notification -> {
                     String time;
-                    long hoursDifference = java.time.Duration.between(notification.getDate(), now).toHours();
+                    long hoursDifference = java.time.Duration.between(notification.getDate().plusHours(9), now).toHours();
 
                     if (hoursDifference < 24) {
                         if(hoursDifference < 1) {time = "1 시간 이내";}
