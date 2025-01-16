@@ -1,6 +1,7 @@
 package contest.blaybus.v1.application;
 
 import contest.blaybus.v1.domain.Admin;
+import contest.blaybus.v1.domain.NotificationCategory;
 import contest.blaybus.v1.domain.Post;
 import contest.blaybus.v1.domain.SortOrder;
 import contest.blaybus.v1.domain.repository.AdminRepository;
@@ -8,6 +9,7 @@ import contest.blaybus.v1.domain.repository.PostRepository;
 import contest.blaybus.v1.infrastructure.dto.PostListResponseDTO;
 import contest.blaybus.v1.infrastructure.dto.PostResponseDTO;
 import contest.blaybus.v1.presentation.dto.CreatePostRequestDTO;
+import contest.blaybus.v1.presentation.dto.NewFcmDTO;
 import contest.blaybus.v1.presentation.dto.UpdatePostRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ public class PostServiceImpl implements PostService {
     private final AdminRepository adminRepository;
 
     private final FirebaseCloudMessageService fcmService;
+
     // 게시글 생성
     @Transactional
     @Override
@@ -42,7 +45,12 @@ public class PostServiceImpl implements PostService {
 
         Post savedPost = postRepository.saveAndFlush(post);
 
-        fcmService.sendPushNotificationsToMembers(); // 신규 게시글 생성 푸시 알림
+        final NewFcmDTO newFcm = NewFcmDTO.builder()
+                .title("게시판")
+                .content("\uD83C\uDF89 새로운 글이 올라왔어요! \uD83D\uDCF0 확인해보세요!")
+                .category(NotificationCategory.POST)
+                .build();
+        fcmService.sendPushNotificationsToMembers(newFcm); // 신규 게시글 생성 푸시 알림
 
         return PostResponseDTO.fromEntity(savedPost);
     }

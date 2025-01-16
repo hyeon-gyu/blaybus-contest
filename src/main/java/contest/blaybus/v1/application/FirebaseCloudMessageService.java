@@ -55,7 +55,7 @@ public class FirebaseCloudMessageService {
     }
 
     @Async
-    public void sendPushNotificationsToMembers() {
+    public void sendPushNotificationsToMembers(NewFcmDTO dto) {
         List<Member> memberList = memberRepository.findAllFcmToken();
 
         if (memberList.isEmpty()) {
@@ -66,14 +66,15 @@ public class FirebaseCloudMessageService {
             try {
                 sendMessageTo(NewFcmDTO.builder()
                         .fcmToken(member.getFcmToken())
-                        .title("게시판")
-                        .content("\uD83C\uDF89 새로운 글이 올라왔어요! \uD83D\uDCF0 확인해보세요!")
+                        .title(dto.title())
+                        .content(dto.content())
                         .build());
-                final Notification newNotification = Notification.builder()
-                        .title("게시판")
-                        .content("\uD83C\uDF89 새로운 글이 올라왔어요! \uD83D\uDCF0 확인해보세요!")
+
+                Notification newNotification = Notification.builder()
+                        .title(dto.title())
+                        .content(dto.content())
                         .date(LocalDateTime.now())
-                        .category(NotificationCategory.POST)
+                        .category(dto.category())
                         .member(member)
                         .build();
                 notificationRepository.save(newNotification);
