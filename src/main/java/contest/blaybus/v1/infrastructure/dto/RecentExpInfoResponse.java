@@ -15,11 +15,13 @@ public class RecentExpInfoResponse {
     private Date date;
     private String content;
     private long exp;
+    private String coin;
 
-    public RecentExpInfoResponse(Date date, String content, long exp) {
+    public RecentExpInfoResponse(Date date, String content, long exp, String coin) {
         this.date = date;
         this.content = content;
         this.exp = exp;
+        this.coin = coin;
     }
 
     public static RecentExpInfoResponse fromEntity(ExperiencePointHistory history) {
@@ -27,6 +29,7 @@ public class RecentExpInfoResponse {
                 .date(history.getDate())
                 .content(history.getContent())
                 .exp(history.getPoint())
+                .coin(history.getCoin())
                 .build();
     }
 }
