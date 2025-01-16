@@ -6,6 +6,12 @@ import contest.blaybus.v1.application.AdminService;
 import contest.blaybus.v1.common.ApiResponse;
 import contest.blaybus.v1.infrastructure.dto.MemberInfoResponse;
 import contest.blaybus.v1.presentation.dto.CheckPwdDTO;
+import contest.blaybus.v1.presentation.dto.ModifyDateDTO;
+import contest.blaybus.v1.presentation.dto.ModifyJobTypeDTO;
+import contest.blaybus.v1.presentation.dto.ModifyNameDTO;
+import contest.blaybus.v1.presentation.dto.ModifyNumberDTO;
+import contest.blaybus.v1.presentation.dto.ModifyPwdDTO;
+import contest.blaybus.v1.presentation.dto.ModifyTeamDTO;
 import contest.blaybus.v1.presentation.dto.NewMemberDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -74,6 +80,48 @@ public class AdminController {
     public ApiResponse<List<MemberInfoResponse>> searchByNameOrNumber (
             @PathVariable(value = "keyword") String keyword) {
         return ApiResponse.success(adminService.searchByNameOrNumber(keyword));
+    }
+
+    @PostMapping("/mod/name")
+    @Operation(summary = "구성원 정보 설정 - 이름 변경", description = "기존과 동일한 값이 요청되면 false로 응답합니다! 변경 성공시 true")
+    public ApiResponse<Boolean> modifyName(
+            @RequestBody ModifyNameDTO dto) {
+        return ApiResponse.success(adminService.modifyName(dto));
+    }
+
+    @PostMapping("/mod/team")
+    @Operation(summary = "구성원 정보 설정 - 소속 변경", description = "기존과 동일한 값이 요청되면 false로 응답합니다! 변경 성공시 true")
+    public ApiResponse<Boolean> modifyTeam(
+            @RequestBody ModifyTeamDTO dto) {
+        return ApiResponse.success(adminService.modifyTeam(dto));
+    }
+
+    @PostMapping("/mod/num")
+    @Operation(summary = "구성원 정보 설정 - 사번 변경", description = "기존과 동일한 값이 요청되면 false로 응답합니다! 변경 성공시 true")
+    public ApiResponse<Boolean> modifyNumber(
+            @RequestBody ModifyNumberDTO dto) {
+        return ApiResponse.success(adminService.modifyNumber(dto));
+    }
+
+    @PostMapping("/mod/jobType")
+    @Operation(summary = "구성원 정보 설정 - 직군 변경", description = "기존과 동일한 값이 요청되면 false로 응답합니다! 변경 성공시 true")
+    public ApiResponse<Boolean> modifyJobType(
+            @RequestBody ModifyJobTypeDTO dto) {
+        return ApiResponse.success(adminService.modifyJobType(dto));
+    }
+
+    @PostMapping("/mod/password")
+    @Operation(summary = "구성원 정보 설정 - 비밀번호 변경", description = "기존과 동일한 값이 요청되면 false로 응답합니다! 변경 성공시 true")
+    public ApiResponse<Boolean> modifyPwd(
+            @RequestBody ModifyPwdDTO dto) {
+        return ApiResponse.success(adminService.modifyPwd(dto));
+    }
+
+    @PostMapping("/mod/date")
+    @Operation(summary = "구성원 정보 설정 - 입사일 변경", description = "기존과 동일한 값이 요청되면 false로 응답합니다! 변경 성공시 true")
+    public ApiResponse<Boolean> modifyDate(
+            @RequestBody ModifyDateDTO dto) throws ParseException {
+        return ApiResponse.success(adminService.modifyDate(dto));
     }
 
 }

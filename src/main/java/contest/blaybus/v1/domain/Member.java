@@ -16,6 +16,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -82,4 +83,15 @@ public class Member {
     public void updatePwd(String pwd) {this.password = pwd; }
     public void updateProfileImg(String url) {this.profileImg = url; }
     public void updateFcmToken(String fcmToken) {this.fcmToken = fcmToken; }
+    public void updateName(String name) {this.name = name; }
+    public void updateTeam(String team) {
+        this.team = Team.parsing(team);
+    }
+    public void updateNumber(String identificationNumber) {this.identificationNumber = identificationNumber; }
+    public void updateJobType(String jobType) {
+        this.jobType = JobType.parsing(jobType);
+    }
+    public void updateDate(Date date) {
+        this.effectiveDate = date;
+    }
 }

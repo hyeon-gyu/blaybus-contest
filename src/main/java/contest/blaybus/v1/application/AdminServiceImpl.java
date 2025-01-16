@@ -9,15 +9,24 @@ import contest.blaybus.v1.domain.repository.AdminRepository;
 import contest.blaybus.v1.domain.repository.MemberRepository;
 import contest.blaybus.v1.infrastructure.dto.MemberInfoResponse;
 import contest.blaybus.v1.presentation.dto.CheckPwdDTO;
+import contest.blaybus.v1.presentation.dto.ModifyDateDTO;
+import contest.blaybus.v1.presentation.dto.ModifyJobTypeDTO;
+import contest.blaybus.v1.presentation.dto.ModifyNameDTO;
+import contest.blaybus.v1.presentation.dto.ModifyNumberDTO;
+import contest.blaybus.v1.presentation.dto.ModifyPwdDTO;
+import contest.blaybus.v1.presentation.dto.ModifyTeamDTO;
 import contest.blaybus.v1.presentation.dto.NewMemberDTO;
 import jakarta.annotation.PostConstruct;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -135,6 +144,75 @@ public class AdminServiceImpl implements AdminService {
             adminRepository.save(newAdmin);
         }
 
+    }
+
+    @Transactional
+    public Boolean modifyName(ModifyNameDTO dto) {
+        return memberRepository.findById(dto.memberId())
+                .map(member -> {
+                    if (member.getName().equals(dto.name())) {return false;}
+                    member.updateName(dto.name());
+                    return true;
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+    }
+
+    @Transactional
+    public Boolean modifyTeam(ModifyTeamDTO dto) {
+        return memberRepository.findById(dto.memberId())
+                .map(member -> {
+                    if(member.getTeam().getDisplayName().equals(dto.team())) {return false;}
+                    member.updateTeam(dto.team());
+                    return true;
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+    }
+
+    @Transactional
+    public Boolean modifyNumber(ModifyNumberDTO dto) {
+        return memberRepository.findById(dto.memberId())
+                .map(member -> {
+                    if(member.getIdentificationNumber().equals(dto.number())) {return false;}
+                    member.updateNumber(dto.number());
+                    return true;
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+    }
+
+    @Transactional
+    public Boolean modifyJobType(ModifyJobTypeDTO dto) {
+        return memberRepository.findById(dto.memberId())
+                .map(member -> {
+                    if(member.getJobType().getDescription().equals(dto.jobType())) {return false;}
+                    member.updateJobType(dto.jobType());
+                    return true;
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+    }
+
+    @Transactional
+    public Boolean modifyPwd(ModifyPwdDTO dto) {
+        return memberRepository.findById(dto.memberId())
+                .map(member -> {
+                    if(passwordEncoder.matches(dto.pwd(), member.getPassword())) {return false;}
+                    member.updatePwd(passwordEncoder.encode(dto.pwd()));
+                    return true;
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+    }
+
+    @Transactional
+    public Boolean modifyDate(ModifyDateDTO dto) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date hireDate = formatter.parse(dto.date());
+
+        return memberRepository.findById(dto.memberId())
+                .map(member -> {
+                    if(member.getEffectiveDate().equals(hireDate)) {return false;}
+                    member.updateDate(hireDate);
+                    return true;
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
     }
 
 }
