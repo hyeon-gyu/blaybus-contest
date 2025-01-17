@@ -9,13 +9,13 @@ import lombok.Getter;
 @Getter
 public class ExpHistoryResponse {
 
-    private ExpType expType;
+    private String expType;
     private String date;
     private String content;
     private long point;
     private String coin;
 
-    public ExpHistoryResponse(ExpType expType, String date, String content, long point, String coin) {
+    public ExpHistoryResponse(String expType, String date, String content, long point, String coin) {
         this.expType = expType;
         this.date = date;
         this.content = content;
@@ -25,7 +25,7 @@ public class ExpHistoryResponse {
 
     public static ExpHistoryResponse fromEntity(ExperiencePointHistory history) {
         return ExpHistoryResponse.builder()
-                .expType(history.getExpType())
+                .expType(history.getExpType().getDescription())
                 .date(history.getDate().toString())
                 .content(history.getContent())
                 .point(history.getPoint())
