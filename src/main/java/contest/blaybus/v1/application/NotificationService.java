@@ -39,7 +39,7 @@ public class NotificationService {
                         if(hoursDifference < 1) {time = "1 시간 이내";}
                         else {time = hoursDifference + "시간 전";}
                     } else {
-                        time = notification.getDate().format(DateTimeFormatter.ofPattern("dd.MM.yy"));
+                        time = notification.getDate().format(DateTimeFormatter.ofPattern("yy.MM.dd"));
                     }
 
                     return PushResponse.builder()
